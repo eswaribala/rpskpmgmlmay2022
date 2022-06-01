@@ -13,3 +13,11 @@ y1=df["BloodPressure"]
 plt.scatter(x, y, color='g')
 plt.scatter(x, y1, color='m')
 plt.show()
+
+plt.bar(x, y, color='g', align='center')
+
+plt.show()
+
+import seaborn as sb
+sb.barplot(x = "BMI", y = "BloodPressure",  data = df)
+plt.show()
