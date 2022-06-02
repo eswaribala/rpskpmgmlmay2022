@@ -8,29 +8,24 @@ import matplotlib.pyplot as plt
 
 import pandas as pd
 
-df=pd.read_csv("Salary_Data.csv")
-x=df["YearsExperience"]
-y=df["Salary"]
+df=pd.read_csv("50_Startups.csv")
+x=df.iloc[:,0:3].values
+y=df.iloc[:,3].values
+
+print(x)
+print(y)
+
 #scaling techniques
 from sklearn import preprocessing
 min_max_scaler = preprocessing.MinMaxScaler()
 x_scaled = min_max_scaler.fit_transform(df)
 df = pd.DataFrame(x_scaled)
-print(df.iloc[:,0].values)
-print(df.iloc[:,1].values)
+print(x)
+print(y)
 
-
-plt.figure()
-plt.title('Salary Data')
-plt.xlabel('Experience')
-plt.ylabel('Salary')
-plt.plot(df.iloc[:,0], df.iloc[:,1], 'm.') #color code is k or m or etc.,
-plt.axis([-0.1, 1.2, -0.1, 1.2])
-plt.grid(True)
-plt.show()
 
 from sklearn.model_selection import train_test_split
-x_train,x_test,y_train,y_test=train_test_split(df.iloc[:,0].values,df.iloc[:,1].values,test_size=0.3,random_state=0)
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.3,random_state=0)
 
 print("x training and test")
 print(x_train)
@@ -38,15 +33,6 @@ print(x_test)
 print("x training and test")
 print(y_train)
 print(y_test)
-
-import numpy as np
-
-x_train=np.array(x_train).reshape(-1,1)
-print(x_train)
-y_train=np.array(y_train).reshape(-1,1)
-
-x_test=np.array(x_test).reshape(-1,1)
-y_test=np.array(y_test).reshape(-1,1)
 
 
 #linear regression
@@ -58,14 +44,14 @@ print("Results.....")
 print(model.coef_)
 print(model.intercept_)
 
+
 #prediction
-y_pred=model.predict(y_test)
+y_pred=model.predict(x_test)
 print("Y Prediction")
 print(y_pred)
 
-
 #error 
-
+'''
 #MSE
 
 import numpy as np
@@ -103,5 +89,5 @@ est2 = est.fit()
 print("Summary.....")
 print(est2.summary())
 
-
+'''
 
