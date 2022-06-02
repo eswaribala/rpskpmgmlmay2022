@@ -10,11 +10,11 @@ import pandas as pd
 
 df=pd.read_csv("50_Startups.csv")
 x=df.iloc[:,0:3].values
-y=df.iloc[:,3].values
+y=df.iloc[:,4].values
 
 print(x)
 print(y)
-
+'''
 #scaling techniques
 from sklearn import preprocessing
 min_max_scaler = preprocessing.MinMaxScaler()
@@ -22,7 +22,7 @@ x_scaled = min_max_scaler.fit_transform(df)
 df = pd.DataFrame(x_scaled)
 print(x)
 print(y)
-
+'''
 
 from sklearn.model_selection import train_test_split
 x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.3,random_state=0)
