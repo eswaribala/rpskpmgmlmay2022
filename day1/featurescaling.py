@@ -30,7 +30,7 @@ plt.figure()
 plt.title('Angola Poulation')
 plt.xlabel('Year')
 plt.ylabel('Population')
-plt.plot(df.iloc[1:100,0], df.iloc[1:100,1], 'b.') #color code is k or m or etc.,
+plt.plot(df.iloc[1:1000,0], df.iloc[1:1000,1], 'b.') #color code is k or m or etc.,
 plt.axis([0.1, 1, 0.01,0.1])
 plt.grid(True)
 plt.show()
