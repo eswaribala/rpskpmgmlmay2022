@@ -124,6 +124,6 @@ def predict_price(dates, prices, x):
 
 get_data('snap.csv') # calling get_data method by passing the csv file to it
 
-predicted_price = predict_price(dates, prices, 22.03)
+predicted_price = predict_price(dates, prices, [[22.03]])
 
 print('The predicted prices are:', predicted_price)
