@@ -8,6 +8,7 @@ Created on Wed Jun 13 21:36:24 2018
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
  
@@ -107,6 +108,8 @@ def random_forest_classifier(features, target):
     :return: trained random forest classifier
     """
     clf = RandomForestClassifier()
+    
+    # clf = RandomForestRegressor(n_estimators=5,random_state=0)
     clf.fit(features, target)
     return clf
  
