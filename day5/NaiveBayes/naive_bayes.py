@@ -38,6 +38,15 @@ from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(y_test, y_pred)
 print("Confusion Matrix")
 print(cm)
+
+print("Error Rate")
+#print(cm[0,1])
+#print(cm[1,0])
+#print(cm[1,1])
+
+print((cm[0,1]+cm[1,0])/(cm[0,0]+cm[0,1]+cm[1,0]+cm[1,1]))
+
+
 from sklearn import metrics
 # summarize the fit of the model
 print(metrics.classification_report(y_test, y_pred))

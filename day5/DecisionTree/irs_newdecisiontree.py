@@ -37,6 +37,15 @@ predicted = model.predict(X_test)
 print(expected)
 print(predicted)
 
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(expected, predicted)
+print("Confusion Matrix")
+print(cm)
+
+
+print ("Error Rate")
+
+
 # summarize the fit of the model
 print(metrics.classification_report(expected, predicted))
 print(metrics.confusion_matrix(expected, predicted))
@@ -49,4 +58,4 @@ dot_data = tree.export_graphviz(model, out_file=None,
 # Draw graph
 graph = pydotplus.graph_from_dot_data(dot_data)
 
-graph.write_pdf("iris2020.pdf")
+graph.write_pdf("iris2022.pdf")
