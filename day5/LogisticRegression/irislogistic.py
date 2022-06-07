@@ -33,6 +33,12 @@ logreg.fit(X_train,y_train)
 #
 y_pred=logreg.predict(X_test)
 
+print("Actual Data")
+print(y_test)
+print("Calculated Data")
+print(y_pred)
+
+
 #confusion matrix
 #Diagonal values represent accurate predictions, 
 #while non-diagonal elements are inaccurate predictions. 
