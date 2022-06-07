@@ -10,8 +10,8 @@ dataset = pd.read_csv('Social_Network_Ads.csv')
 print(dataset.shape)
 X = dataset.iloc[:, [2, 3]].values
 y = dataset.iloc[:, 4].values
-#print(X)
-#print(y)
+print(X)
+print(y)
 
 # Splitting the dataset into the Training set and Test set
 from sklearn.model_selection import train_test_split
@@ -36,6 +36,7 @@ print(y_pred)
 # Making the Confusion Matrix
 from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(y_test, y_pred)
+print("Confusion Matrix")
 print(cm)
 from sklearn import metrics
 # summarize the fit of the model
