@@ -27,9 +27,9 @@ import os
 
 df = pd.read_csv("Admission_Predict.csv",sep = ",")
 
-print("There are",len(df.columns),"columns:")
-for x in df.columns:
-    sys.stdout.write(str(x)+", ")
+#print("There are",len(df.columns),"columns:")
+#for x in df.columns:
+   # sys.stdout.write(str(x)+", ")
     
 df=df.rename(columns = {'Chance of Admit ':'Chance of Admit'})
 '''
@@ -38,7 +38,7 @@ There is no string or null data.
 Data types are int64 and float64.
 Memory usage: 28.2 KB
 '''
-
+'''
 print(df.info())
 
 print(df.head())
@@ -47,11 +47,13 @@ sns.heatmap(df.corr(), ax=ax, annot=True, linewidths=0.05, fmt= '.2f',cmap="magm
 plt.show()
 
 '''
+'''
 Having Research or not:
 The majority of the candidates in the dataset have research experience.
 Therefore, the Research will be a unimportant feature for the Chance of Admit. 
 The correlation between Chance of Admit and Research was already lower than 
 other correlation values.
+'''
 '''
 print("Not Having Research:",len(df[df.Research == 0]))
 print("Having Research:",len(df[df.Research == 1]))
@@ -92,7 +94,7 @@ s.plot(kind='bar',figsize=(20, 10))
 plt.xlabel("University Rating")
 plt.ylabel("Candidates")
 plt.show()
-
+'''
 # it may be needed in the future.
 serialNo = df["Serial No."].values
 df.drop(["Serial No."],axis=1,inplace = True)
@@ -115,10 +117,22 @@ y_test_01 = np.array(y_test_01)
 from sklearn.linear_model import LogisticRegression
 lrc = LogisticRegression()
 lrc.fit(x_train,y_train_01)
-print("score: ", lrc.score(x_test,y_test_01))
-print("real value of y_test_01[1]: " + str(y_test_01[1]) + " -> the predict: " + str(lrc.predict(x_test.iloc[[1],:])))
-print("real value of y_test_01[2]: " + str(y_test_01[2]) + " -> the predict: " + str(lrc.predict(x_test.iloc[[2],:])))
 
+print("Score")
+print(lrc.score(x_test,y_test_01))
+
+print("Actual Value")
+print(y_test_01[12])
+
+print ("Predicted Value")
+print(lrc.predict(x_test.iloc[[12],:]))
+
+
+
+#print("score: ", lrc.score(x_test,y_test_01))
+#print("real value of y_test_01[1]: " + str(y_test_01[1]) + " -> the predict: " + #str(lrc.predict(x_test.iloc[[1],:])))
+#print("real value of y_test_01[2]: " + str(y_test_01[2]) + " -> the predict: " + #str(lrc.predict(x_test.iloc[[2],:])))
+'''
 # confusion matrix
 from sklearn.metrics import confusion_matrix
 cm_lrc = confusion_matrix(y_test_01,lrc.predict(x_test))
@@ -148,4 +162,4 @@ plt.ylabel("real y values")
 plt.title("Test for Train Dataset")
 plt.show()
 
-
+'''
