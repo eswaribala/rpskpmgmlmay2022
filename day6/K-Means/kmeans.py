@@ -8,6 +8,7 @@ import pandas as pd
 # Importing the dataset
 dataset = pd.read_csv('Mall_Customers.csv')
 X = dataset.iloc[:, [3, 4]].values
+print(X)
 # y = dataset.iloc[:, 3].values
 '''
 # Splitting the dataset into the Training set and Test set
@@ -35,9 +36,13 @@ plt.xlabel('Number of clusters')
 plt.ylabel('WCSS')
 plt.show()
 
+
 # Fitting K-Means to the dataset
-kmeans = KMeans(n_clusters = 2, init = 'k-means++', random_state = 0)
+kmeans = KMeans(n_clusters = 5, init = 'k-means++', random_state = 0)
 y_kmeans = kmeans.fit_predict(X)
+
+#print(y_kmeans)
+#print(X[y_kmeans])
 
 # Visualising the clusters
 plt.scatter(X[y_kmeans == 0, 0], X[y_kmeans == 0, 1], s = 100, c = 'red', label = 'Cluster 1')
