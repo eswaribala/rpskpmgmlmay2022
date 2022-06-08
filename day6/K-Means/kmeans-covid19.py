@@ -7,8 +7,8 @@ import pandas as pd
 
 # Importing the dataset
 dataset = pd.read_excel('COVID_VACCINE_STATE_SUMMARY.XLSX')
-X = dataset.iloc[:, [1, 2]].values
-print(X)
+X = dataset.iloc[:, 1:3].values
+#print(X)
 # y = dataset.iloc[:, 3].values
 '''
 # Splitting the dataset into the Training set and Test set
@@ -26,23 +26,26 @@ y_train = sc_y.fit_transform(y_train)
 # Using the elbow method to find the optimal number of clusters
 from sklearn.cluster import KMeans
 wcss = []
-for i in range(1, 11):
+for i in range(1, 15):
     kmeans = KMeans(n_clusters = i, init = 'k-means++', random_state = 0)
     kmeans.fit(X)
     wcss.append(kmeans.inertia_)
-plt.plot(range(1, 11), wcss)
+plt.plot(range(1, 15), wcss)
 plt.title('The Elbow Method')
 plt.xlabel('Number of clusters')
 plt.ylabel('WCSS')
 plt.show()
 
-
+print(X)
 # Fitting K-Means to the dataset
 kmeans = KMeans(n_clusters = 2, init = 'k-means++', random_state = 0)
 y_kmeans = kmeans.fit_predict(X)
 
-#print(y_kmeans)
-#print(X[y_kmeans])
+print(y_kmeans)
+print(X[y_kmeans])
+
+#for x,y in X[y_kmeans]:
+    #print(x,y)
 
 # Visualising the clusters
 plt.scatter(X[y_kmeans == 0, 0], X[y_kmeans == 0, 1], s = 100, c = 'red', label = 'Cluster 1')
