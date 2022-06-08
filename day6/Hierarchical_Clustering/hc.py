@@ -35,6 +35,11 @@ from sklearn.cluster import AgglomerativeClustering
 hc = AgglomerativeClustering(n_clusters = 5, affinity = 'euclidean', linkage = 'ward')
 y_hc = hc.fit_predict(X)
 
+#print(y_hc)
+
+#print(X)
+print(X[y_hc == 0, 0])
+print(X[y_hc == 0,1])
 # Visualising the clusters
 plt.scatter(X[y_hc == 0, 0], X[y_hc == 0, 1], s = 100, c = 'red', label = 'Cluster 1')
 plt.scatter(X[y_hc == 1, 0], X[y_hc == 1, 1], s = 100, c = 'blue', label = 'Cluster 2')
