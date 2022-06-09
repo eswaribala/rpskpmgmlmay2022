@@ -6,13 +6,16 @@ Created on Fri Jun 15 06:35:29 2018
 """
 
 import matplotlib.pyplot as plt
-import tensorflow as tf
+#import tensorflow as tf
+import tensorflow.compat.v1 as tf 
+
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.utils import  shuffle
 from sklearn.model_selection import train_test_split
- 
+
+tf.disable_v2_behavior() 
 #define the one hot encode function
 def one_hot_encode(labels):
     n_labels = len(labels)
@@ -46,7 +49,7 @@ cost_history = np.empty(shape=[1],dtype=float)
  
 n_dim = X.shape[1]
 n_class = 2
- 
+
 x = tf.placeholder(tf.float32,[None,n_dim])
 W = tf.Variable(tf.zeros([n_dim,n_class]))
 b = tf.Variable(tf.zeros([n_class]))
