@@ -56,8 +56,8 @@ def apriori_gen(k, Ck, Ck_p):
 	
 	cklen = len(Ck_p)
 	
-	for i in xrange(cklen):
-		for j in xrange(i+1, cklen):
+	for i in range(cklen):
+		for j in range(i+1, cklen):
 			
 			if Ck_p[i][:-1] == Ck_p[j][:-1]:
 				Ck.append( Ck_p[i] + [ Ck_p[j][-1] ] )
@@ -81,7 +81,7 @@ def generateAssociateRule(pat, suppat, minconf, NTd):
 	allCombi = sum([map(list, combinations(pat, i)) for i in range(len(pat) + 1)], [])
 	setSize = len(allCombi)-2
 	
-	for i in xrange(setSize, setSize/2, -1):
+	for i in range(setSize, setSize/2, -1):
 		conf = float(suppat)/candidates[ frozenset(allCombi[i]) ]
 		if conf >= minconf:
 			associations.append((conf, str(allCombi[i]), str(allCombi[setSize-i+1]), float(suppat)/NTd) )
