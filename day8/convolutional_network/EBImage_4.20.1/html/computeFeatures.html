@@ -1,0 +1,253 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Compute object features</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for computeFeatures {EBImage}"><tr><td>computeFeatures {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Compute object features</h2>
+
+<h3>Description</h3>
+
+<p>Computes morphological and texture features from image objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+computeFeatures(x, ref, methods.noref=c("computeFeatures.moment", "computeFeatures.shape"),
+  methods.ref=c("computeFeatures.basic", "computeFeatures.moment", "computeFeatures.haralick"),
+  xname="x", refnames, properties=FALSE, expandRef=standardExpandRef, ...)
+  
+computeFeatures.basic(x, ref, properties=FALSE, basic.quantiles=c(0.01, 0.05, 0.5, 0.95, 0.99), xs, ...)
+computeFeatures.shape(x, properties=FALSE, xs, ...)
+computeFeatures.moment(x, ref, properties=FALSE, xs, ...)
+computeFeatures.haralick(x, ref , properties=FALSE, haralick.nbins=32, haralick.scales=c(1, 2), xs, ...)
+
+standardExpandRef(ref, refnames, filter = gblob())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <code>Image</code> object or an array containing labelled objects.
+Labelled objects are pixel sets with the same unique integer value.</p>
+</td></tr>
+<tr valign="top"><td><code>ref</code></td>
+<td>
+<p>A matrix or a list of matrices, containing the
+intensity values of the reference objects.</p>
+</td></tr>
+<tr valign="top"><td><code>methods.noref</code></td>
+<td>
+<p>A character vector containing the function names
+to be called to compute features without reference intensities. Default is
+<code>computeFeatures.moment</code> and <code>computeFeatures.shape</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>methods.ref</code></td>
+<td>
+<p>A character vector containing the function names
+to be called to compute features with reference intensities. Default is
+<code>computeFeatures.basic</code>, <code>computeFeatures.moment</code> and
+<code>computeFeatures.haralick</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>xname</code></td>
+<td>
+<p>A character string naming the object layer. Default is
+<code>x</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>refnames</code></td>
+<td>
+<p>A character vector naming the reference intensity
+layers. Default are the names of <code>ref</code>, if present. If not,
+reference intensity layers are named using lower-case letters.</p>
+</td></tr>
+<tr valign="top"><td><code>properties</code></td>
+<td>
+<p>A logical. If <code>FALSE</code>, the default, the
+function returns the feature matrix. If <code>TRUE</code>, the function
+returns feature properties.</p>
+</td></tr>
+<tr valign="top"><td><code>expandRef</code></td>
+<td>
+<p>A function used to expand the reference
+images. Default is <code>standardExpandRef</code>. See Details.</p>
+</td></tr>
+<tr valign="top"><td><code>basic.quantiles</code></td>
+<td>
+<p>A numerical vector indicating the quantiles to
+compute.</p>
+</td></tr>
+<tr valign="top"><td><code>haralick.nbins</code></td>
+<td>
+<p>An integer indicating the number of bins using
+to compute the Haralick matrix. See Details.</p>
+</td></tr>
+<tr valign="top"><td><code>haralick.scales</code></td>
+<td>
+<p>A integer vector indicating the number of
+scales to use to compute the Haralick features.</p>
+</td></tr>
+<tr valign="top"><td><code>xs</code></td>
+<td>
+<p>An optional temporary object created by
+<code>computeFeatures</code> used for performance considerations.</p>
+</td></tr>
+<tr valign="top"><td><code>filter</code></td>
+<td>
+<p>The filter applied to reference images using <code><a href="filter2.html">filter2</a></code> in order to add granulometry.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Optional arguments passed to the feature computation functions.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Features are named x.y.f, where x is the object layer, y the reference
+image layer and f the feature name. Examples include <code>cell.dna.mean</code>,
+indicating mean DNA intensity computed in the cell or
+<code>nucleus.tubulin.cx</code>, indicating the x center of mass of tubulin
+computed in the nucleus region.
+</p>
+<p>The function <code>computeFeatures</code> computes sets of
+features. Features are organized in 4 sets, each computed by a
+different function. The function <code>computeFeatures.basic</code>
+computes spatial-independent statistics on pixel intensities:
+</p>
+
+<ul>
+<li><p> b.mean: mean intensity
+</p>
+</li>
+<li><p> b.sd: standard deviation intensity
+</p>
+</li>
+<li><p> b.mad: mad intensity
+</p>
+</li>
+<li><p> b.q*: quantile intensity
+</p>
+</li></ul>
+
+<p>The function <code>computeFeatures.shape</code> computes features that
+quantify object shape:
+</p>
+
+<ul>
+<li><p> s.area: area size (in pixels)
+</p>
+</li>
+<li><p> s.perimeter: perimeter (in pixels)
+</p>
+</li>
+<li><p> s.radius.mean: mean radius (in pixels)
+</p>
+</li>
+<li><p> s.radius.sd: standard deviation of the mean radius (in pixels)
+</p>
+</li>
+<li><p> s.radius.max: max radius (in pixels)
+</p>
+</li>
+<li><p> s.radius.min: min radius (in pixels)
+</p>
+</li></ul>
+
+<p>The function <code>computeFeatures.moment</code> computes features
+related to object image moments, which can be computed with or without
+reference intensities:
+</p>
+
+<ul>
+<li><p> m.cx: center of mass x (in pixels)
+</p>
+</li>
+<li><p> m.cy: center of mass y (in pixels)
+</p>
+</li>
+<li><p> m.majoraxis: elliptical fit major axis (in pixels)
+</p>
+</li>
+<li><p> m.eccentricity: elliptical eccentricity defined by
+sqrt(1-minoraxis^2/majoraxis^2). Circle eccentricity is 0 and straight
+line eccentricity is 1.
+</p>
+</li>
+<li><p> m.theta: object angle (in radians)
+</p>
+</li></ul>
+
+<p>The function <code>computeFeatures.haralick</code> computes features
+that quantify pixel texture. Features are named according to
+Haralick's original paper.
+</p>
+
+
+<h3>Value</h3>
+
+<p>If <code>properties</code> if <code>FALSE</code> (by default), <code>computeFeatures</code>
+returns a matrix of n cells times p features, where p depends of
+the options given to the function. Returns <code>NULL</code> if no object is
+present.
+</p>
+<p>If <code>properties</code> if <code>TRUE</code>, <code>computeFeatures</code>
+returns a matrix of p features times 2 properties (translation and
+rotation invariance). Feature properties are useful to filter out
+features that may not be needed for specific tasks, e.g. cell
+position when doing cell classification.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gregoire Pau, <a href="mailto:gregoire.pau@embl.de">gregoire.pau@embl.de</a>, 2011
+</p>
+
+
+<h3>References</h3>
+
+<p>R. M. Haralick, K Shanmugam and Its'Hak Deinstein (1979). <em>Textural Features for Image 
+Classification</em>. IEEE Transactions on Systems, Man and Cybernetics.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="bwlabel.html">bwlabel</a></code>, <code><a href="propagate.html">propagate</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  ## load and segment nucleus
+  y = readImage(system.file("images", "nuclei.tif", package="EBImage"))[,,1]
+  x = thresh(y, 10, 10, 0.05)
+  x = opening(x, makeBrush(5, shape='disc'))
+  x = bwlabel(x)
+  display(y, title="Cell nuclei")
+  display(x, title="Segmented nuclei")
+
+  ## compute shape features
+  fts = computeFeatures.shape(x)
+  fts
+
+  ## compute features
+  ft = computeFeatures(x, y, xname="nucleus")
+  cat("median features are:\n")
+  apply(ft, 2, median)
+
+  ## compute feature properties
+  ftp = computeFeatures(x, y, properties=TRUE, xname="nucleus")
+  ftp
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Draw a circle on an image.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for drawCircle {EBImage}"><tr><td>drawCircle {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Draw a circle on an image.</h2>
+
+<h3>Description</h3>
+
+<p>Draw a circle on an image.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+drawCircle(img, x, y, radius, col, fill=FALSE, z=1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>img</code></td>
+<td>
+<p>An <code>Image</code> object or an array.</p>
+</td></tr>  
+<tr valign="top"><td><code>x, y, radius</code></td>
+<td>
+<p>numerics indicating the center and the radius
+of the circle.</p>
+</td></tr>
+<tr valign="top"><td><code>col</code></td>
+<td>
+<p>A numeric or a character string specifying the color
+of the circle.</p>
+</td></tr>
+<tr valign="top"><td><code>fill</code></td>
+<td>
+<p>A logical indicating whether the circle should be filled.
+Default is <code>FALSE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>z</code></td>
+<td>
+<p>A numeric indicating on which frame of the image the circle
+should be drawn. Default is 1.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An <code>Image</code> object or an array, containing the transformed version
+of <code>img</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gregoire Pau, 2010
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  ## Simple white circle
+  x = matrix(0, nrow=300, ncol=300)
+  y = drawCircle(x, 100, 200, 47, col=1)
+  display(y)
+  
+  ## Simple filled yellow circle
+  x = channel(y, 'rgb')
+  y = drawCircle(x, 200, 140, 57, col='yellow', fill=TRUE)
+  display(y)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

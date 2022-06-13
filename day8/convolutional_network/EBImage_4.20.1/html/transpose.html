@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Image Transposition</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for transpose {EBImage}"><tr><td>transpose {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Image Transposition</h2>
+
+<h3>Description</h3>
+
+<p>Transposes an image by swapping its spatial dimensions.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+transpose(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an <code>Image</code> object or an array.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The transposition of an image is performed by swapping the X and Y indices of its array representation.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A transformed version of <code>x</code> with its first two dimensions transposed.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The function is implemented using an efficient cash-oblivious algorithm which is typically faster than R's <code>aperm</code> and <code>t</code> functions.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Andrzej Oles, <a href="mailto:andrzej.oles@embl.de">andrzej.oles@embl.de</a>, 2012-2017
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="spatial.html">flip</a></code>, <code><a href="spatial.html">flop</a></code>, <code><a href="spatial.html">rotate</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  x = readImage(system.file("images", "sample-color.png", package="EBImage"))
+  y = transpose(x)
+  
+  display(x, title='Original')
+  display(y, title='Transposed')
+
+  ## performing the transposition of an image twice should result in the original image
+  z = transpose(y)
+  identical(x, z)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

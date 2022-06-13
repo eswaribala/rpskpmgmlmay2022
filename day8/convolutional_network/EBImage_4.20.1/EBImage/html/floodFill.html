@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Region filling</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for floodFill {EBImage}"><tr><td>floodFill {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Region filling</h2>
+
+<h3>Description</h3>
+
+<p>Fill regions in images.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+floodFill(x, pts, col, tolerance=0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <code>Image</code> object or an array.</p>
+</td></tr>
+<tr valign="top"><td><code>pts</code></td>
+<td>
+<p>Coordinates of the start filling points given as either of the following: a vector of the form <code>c(x1, y1, x2, y2, ...)</code>, a list of points, a matrix or data frame where rows represent points and columns are the x and y coordinates. For image stacks different points for each frame can be specified by providing them in a list of length matching the number of 'render' frames.</p>
+</td></tr>
+<tr valign="top"><td><code>col</code></td>
+<td>
+<p>Fill color. This argument should be a numeric for Grayscale images and an R color for Color images. Values are recycled such that their length matches the number of points in <code>pts</code>. Can be a list of length matching the number of 'render' frames similarly as <code>pts</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>tolerance</code></td>
+<td>
+<p>Color tolerance used during the fill.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Flood fill is performed using the fast scan line algorithm. Filling
+starts at <code>pts</code> and grows in connected areas where the absolute
+difference of the pixels intensities (or colors) remains below
+<code>tolerance</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <code>Image</code> object or an array, containing the transformed version
+of <code>x</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gregoire Pau, Oleg Sklyar; 2007
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  x = readImage(system.file("images", "shapes.png", package="EBImage"))
+
+  ## fill a shape with 50% shade of gray
+  y = floodFill(x, c(67, 146), 0.5)
+  display(y)
+  
+  ## fill with color
+  y = toRGB(y)
+  y = floodFill(y, c(48, 78), 'orange')	
+  display(y)
+  
+  ## fill multiple shapes with different colors
+  y = y[110:512,1:130,]
+  points = rbind(c(50, 50), c(100, 50), c(150, 50))
+  colors = c("red", "green", "blue")
+  y = floodFill(y, points, colors)
+  display(y)
+  
+  ## area fill
+  x = readImage(system.file("images", "sample.png", package="EBImage"))
+  y = floodFill(x, rbind(c(200, 400), c(200, 325)), 1, tolerance=0.1)
+  display(y)
+  
+  ## application to image stacks
+  f = system.file("images", "nuclei.tif", package="EBImage")
+  x = readImage(f)[1:250,1:250,]
+  x = opening(thresh(x, 12, 12), makeBrush(5, shape='disc'))
+  xy = lapply(getFrames(bwlabel(x)), function(x) computeFeatures.moment(x)[,1:2])
+  y = floodFill(toRGB(x), xy, c("red", "green", "blue"))
+  display(y)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Watershed transformation and watershed based object detection</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for watershed {EBImage}"><tr><td>watershed {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Watershed transformation and watershed based object detection</h2>
+
+<h3>Description</h3>
+
+<p>Watershed transformation and watershed based object detection.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+watershed(x, tolerance=1, ext=1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <code>Image</code> object or an array.</p>
+</td></tr>
+<tr valign="top"><td><code>tolerance</code></td>
+<td>
+<p> The minimum height of the object in the units of image
+intensity between its highest point (seed) and the point where it
+contacts another object (checked for every contact pixel). If the
+height is smaller than the tolerance, the object will be combined with
+one of its neighbors, which is the highest. Tolerance should be chosen
+according to the range of <code>x</code>. Default value is 1, which 
+is a reasonable value if <code>x</code> comes from <code>distmap</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>ext</code></td>
+<td>
+<p>Radius of the neighborhood in pixels for the detection
+of neighboring objects. Higher value smoothes out small objects. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The algorithm identifies and separates objects that stand out of the
+background (zero). It inverts the image and uses water to fill
+the resulting valleys (pixels with high intensity in the source image)
+until another object or background is met.
+The deepest valleys become indexed first, starting from 1.
+</p>
+<p>The function <code>bwlabel</code> is a simpler, faster alternative to 
+segment connected objects from binary images.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <code>Grayscale</code> <code>Image</code> object or an array, containing the
+labelled version of <code>x</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Oleg Sklyar, <a href="mailto:osklyar@ebi.ac.uk">osklyar@ebi.ac.uk</a>, 2007
+</p>
+
+
+<h3>See Also</h3>
+
+ 
+<p><code><a href="bwlabel.html">bwlabel</a></code>,  <code><a href="propagate.html">propagate</a></code> 
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  x = readImage(system.file('images', 'shapes.png', package='EBImage'))
+  x = x[110:512,1:130]
+  display(x, title='Binary')
+  y = distmap(x)
+  display(normalize(y), title='Distance map')
+  w = watershed(y)
+  display(normalize(w), title='Watershed')
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

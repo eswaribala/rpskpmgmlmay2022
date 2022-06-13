@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Oriented contours</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ocontour {EBImage}"><tr><td>ocontour {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Oriented contours</h2>
+
+<h3>Description</h3>
+
+<p>Computes the oriented contour of objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ocontour(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <code>Image</code> object or an array, containing objects.
+Only integer values are considered. Pixels of value 0 constitute
+the background. Each object is a set of pixels with the same unique
+integer value. Objects are assumed connected.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A list of matrices, containing the coordinates of object oriented contours.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gregoire Pau, <a href="mailto:gpau@ebi.ac.uk">gpau@ebi.ac.uk</a>, 2008
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  x = readImage(system.file("images", "shapes.png", package="EBImage"))
+  x = x[1:120,50:120]
+  display(x)
+  oc = ocontour(x)
+  plot(oc[[1]], type='l')
+  points(oc[[1]], col=2)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

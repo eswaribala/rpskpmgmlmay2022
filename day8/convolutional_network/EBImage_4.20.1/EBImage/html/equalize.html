@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Histogram Equalization</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for equalize {EBImage}"><tr><td>equalize {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Histogram Equalization</h2>
+
+<h3>Description</h3>
+
+<p>Equalize the image histogram to a specified range and number of levels.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+equalize(x, range = c(0, 1), levels = 256)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an <code>Image</code> object or an array</p>
+</td></tr>
+<tr valign="top"><td><code>range</code></td>
+<td>
+<p>numeric vector of length 2, the output range of the equalized histogram</p>
+</td></tr>
+<tr valign="top"><td><code>levels</code></td>
+<td>
+<p>number of grayscale levels (Grayscale images) or intensity levels of each channel (Color images)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Histogram equalization is an adaptive image contrast adjustment method. It flattens the image histogram by performing linearization of the cumulative distribution function of pixel intensities.
+</p>
+<p>Individual channels of <code>Color</code> images and frames of image stacks are equalized separately.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <code>Image</code> object or an array, containing the transformed version
+of <code>x</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Andrzej Oles, <a href="mailto:andrzej.oles@embl.de">andrzej.oles@embl.de</a>, 2014
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="clahe.html">clahe</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  x = readImage(system.file('images', 'cells.tif', package='EBImage'))
+  hist(x)
+  y = equalize(x)
+  hist(y)
+  display(y, title='Equalized Grayscale Image')
+
+  x = readImage(system.file('images', 'sample-color.png', package='EBImage'))
+  hist(x)
+  y = equalize(x)
+  hist(y)
+  display(y, title='Equalized Grayscale Image')
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

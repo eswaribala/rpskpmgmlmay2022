@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Image class</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Image {EBImage}"><tr><td>Image {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Image class</h2>
+
+<h3>Description</h3>
+
+<p><code>EBImage</code> uses the <code>Image</code> class to store and process
+images. Images are stored as multi-dimensional arrays containing the pixel
+intensities. <code>Image</code> extends the base class <code>array</code> and
+uses the <code>colormode</code> slot to store how the color information of
+the multi-dimensional data is handled.
+</p>
+<p>The <code>colormode</code> slot can be either <code>Grayscale</code> or <code>Color</code>.
+In either mode, the first two dimensions of the underlying array are understood to be the spatial dimensions of the image.
+In the <code>Grayscale</code> mode the remaining dimensions contain other image frames.
+In the <code>Color</code> mode, the third dimension contains color channels of the image, while higher dimensions contain  image frames.
+The number of channels is not limited and can be any number &gt;= 1; these can be, for instance, the red, green, blue and, possibly, alpha channel.
+Note that grayscale images containing an alpha channel are stored with <code>colormode=Color</code>.
+</p>
+<p>All methods from the <code>EBImage</code> package work either with <code>Image</code> objects or
+multi-dimensional arrays. In the latter case, the color mode is assumed to be <code>Grayscale</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+Image(data, dim, colormode)
+as.Image(x)
+is.Image(x)
+
+## S3 method for class 'Image'
+as.array(x, ...)
+## S3 method for class 'Image'
+as.raster(x, max = 1, i = 1L, ...)
+
+colorMode(y)
+colorMode(y) &lt;- value
+
+imageData(y)
+imageData(y) &lt;- value
+
+getFrame(y, i, type = c('total', 'render'))
+getFrames(y, i, type = c('total', 'render'))
+numberOfFrames(y, type = c('total', 'render'))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>A vector or array containing the pixel intensities of an image. If missing, the default 1x1
+zero-filled array is used.</p>
+</td></tr>
+<tr valign="top"><td><code>dim</code></td>
+<td>
+<p>A vector containing the final dimensions of an <code>Image</code> object. If missing, equals to
+<code>dim(data)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>colormode</code></td>
+<td>
+<p>A numeric or a character string containing the color mode which can be
+either <code>Grayscale</code> or <code>Color</code>. If missing, equals to <code>Grayscale</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An R object.</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>An <code>Image</code> object or an array.</p>
+</td></tr>
+<tr valign="top"><td><code>max</code></td>
+<td>
+<p>Number giving the maximum of the color values range.</p>
+</td></tr>
+<tr valign="top"><td><code>i</code></td>
+<td>
+<p>Number(s) of frame(s). A single number in case of <code>getFrame</code>, or a vector of frame numbers for <code>getFrames</code>. If missing all frames are returned.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>For <code>colorMode</code>, a numeric or a character string containing the color mode which
+can be either <code>Grayscale</code> or <code>Color</code>. For <code>imageData</code>, an <code>Image</code> object or an array.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>A character string containing <code>total</code> or <code>render</code>. Default is <code>total</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments passed to or from other methods.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Depending on <code>type</code>, <code>numberOfFrames</code> returns the total number of frames contained
+in the object <code>y</code> or the number of rendered frames. The total number of frames is independent
+of the color mode and equals to the product of all the dimensions except the two first ones. The
+number of rendered frames is equal to the total number of frames in the <code>Grayscale</code> color mode, or
+to the product of all the dimensions except the three first ones in the <code>Color</code> color mode.
+</p>
+<p><code>getFrame</code> returns the i-th frame contained in the image <code>y</code>. If <code>type</code> is <code>total</code>, the
+function is unaware of the color mode and returns an xy-plane. For <code>type=render</code>, the function returns the
+i-th image as shown by the <code>display</code> function.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>Image</code> and <code>as.Image</code> return a new <code>Image</code> object.
+</p>
+<p><code>is.Image</code> returns TRUE if <code>x</code> is an <code>Image</code> object and FALSE otherwise.
+</p>
+<p><code>as.raster</code> coerces an Image object to its raster representation. For stacked images the <code>i</code>-th frame is returned (by default the first one).
+</p>
+<p><code>colorMode</code> returns the color mode of <code>y</code> and <code>colorMode&lt;-</code> changes the color mode
+of <code>y</code>.
+</p>
+<p><code>imageData</code> returns the array contained in an <code>Image</code> object.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Oleg Sklyar, <a href="mailto:osklyar@ebi.ac.uk">osklyar@ebi.ac.uk</a>, 2005-2007
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="io.html">readImage</a></code>, <code><a href="io.html">writeImage</a></code>, <code><a href="display.html">display</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  s1 = exp(12i*pi*seq(-1, 1, length=300)^2)
+  y = Image(outer(Im(s1), Re(s1)))
+  display(normalize(y))
+
+  x = Image(rnorm(300*300*3),dim=c(300,300,3), colormode='Color')
+  display(x)
+
+  w = matrix(seq(0, 1, len=300), nc=300, nr=300)
+  m = abind::abind(w, t(w), along=3)
+  z = Image(m, colormode='Color')
+  display(normalize(z))
+
+  y = Image(matrix(c('red', 'violet', '#ff51a5', 'yellow'), nrow=10, ncol=10))
+  display(y, interpolate=FALSE)
+
+  ## colorMode example
+  x = readImage(system.file('images', 'nuclei.tif', package='EBImage'))
+  x = x[,,1:3]
+  display(x, title='Cell nuclei')
+  colorMode(x) = Color
+  display(x, title='Cell nuclei in RGB')
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Image I/O</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for io {EBImage}"><tr><td>io {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Image I/O</h2>
+
+<h3>Description</h3>
+
+<p>Read images from files and URLs, and write images to files.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+readImage(files, type, all = TRUE, names = sub("\\.[^.]*$", "", basename(files)), ...)
+writeImage(x, files, type, quality = 100, bits.per.sample, compression = "none", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>files</code></td>
+<td>
+<p>a character vector of file names or URLs.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>image type (optional). Supported values are: <code>jpeg</code>, <code>png</code>, and <code>tiff</code>. If missing, file format is automatically determined by file name extension.</p>
+</td></tr>
+<tr valign="top"><td><code>all</code></td>
+<td>
+<p>logical: when the file contains more than one image should all frames be read, or only the first one?</p>
+</td></tr>
+<tr valign="top"><td><code>names</code></td>
+<td>
+<p>a character vector used for frame names. Should have the same length as files.</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an <code>Image</code> object or an array.</p>
+</td></tr> 
+<tr valign="top"><td><code>bits.per.sample</code></td>
+<td>
+<p>a numeric scalar specifying the number of bits per sample (only for <code>tiff</code> files). Supported values are 8 and 16.</p>
+</td></tr>
+<tr valign="top"><td><code>compression</code></td>
+<td>
+<p>the desired compression algorithm (only for <code>tiff</code> files). For a list of supported values consult the documentation of the <code><a href="../../tiff/html/writeTIFF.html">writeTIFF</a></code> function from the <span class="pkg">tiff</span> package.</p>
+</td></tr>
+<tr valign="top"><td><code>quality</code></td>
+<td>
+<p>a numeric ranging from 1 to 100 (default) controlling the quality of the JPEG output.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments passed to the corresponding functions from the <span class="pkg">jpeg</span>, <span class="pkg">png</span>, and <span class="pkg">tiff</span> packages.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>readImage</code> loads all images from the <code>files</code> vector and returns them stacked into a single <code>Image</code> object containing an array of doubles ranging from 0 (black) to 1 (white). All images need to be of the same <code>type</code> and have the same dimensions and color mode. If <code>type</code> is missing, the appropriate file format is determined from file name extension. Color mode is determined automatically based on the number of channels. When the function fails to read an image it skips to the next element of the <code>files</code> vector issuing a warning message. Non-local files can be read directly from a valid URL.
+</p>
+<p><code>writeImage</code> writes images into files specified by <code>files</code>, were the number of <code>files</code> needs to be equal 1 or the number of frames. Given an image containing multiple frames and a single file name either the whole stack is written into a single TIFF file, or each frame is saved to an individual JPEG/PNG file (for <code>files = "image.*"</code> frames are saved into <code>image-X.*</code> files, where <code>X</code> equals the frame number less one; for an image containing <code>n</code> frames this results in file names numbered from 0 to <code>n-1</code>). 
+</p>
+<p>When writing JPEG files the compression quality can be specified using <code>quality</code>. Valid values range from 100 (highest quality) to 1 (lowest quality). For TIFF files additional information about the desired number of bits per sample (<code>bits.per.sample</code>) and the compression algorithm (<code>compression</code>) can be provided. For a complete list of supported values please consult the documentation of the <span class="pkg">tiff</span> package.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>readImage</code> returns a new <code>Image</code> object.
+</p>
+<p><code>writeImage</code> returns an invisible vector of file names.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Image formats have a limited dynamic range (e.g. JPEG: 8 bit, TIFF: 16 bit) and <code>writeImage</code> may cause some loss of accuracy. In specific, writing 16 bit image data to formats other than TIFF will strip the 8 LSB. When writing TIFF files a dynamic range check is performed and an appropriate value of <code>bits.per.sample</code> is set automatically.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Andrzej Oles, <a href="mailto:andrzej.oles@embl.de">andrzej.oles@embl.de</a>, 2012
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="Image.html">Image</a></code>, <code><a href="display.html">display</a></code>, <code><a href="../../jpeg/html/readJPEG.html">readJPEG</a></code>/<code><a href="../../jpeg/html/writeJPEG.html">writeJPEG</a></code>,  <code><a href="../../png/html/readPNG.html">readPNG</a></code>/<code><a href="../../png/html/writePNG.html">writePNG</a></code>, <code><a href="../../beadarray/html/readTIFF.html">readTIFF</a></code>/<code><a href="../../tiff/html/writeTIFF.html">writeTIFF</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  ## Read and display an image
+  f = system.file("images", "sample-color.png", package="EBImage")
+  x = readImage(f)
+  display(x)
+
+  ## Read and display a multi-frame TIFF
+  y = readImage(system.file("images", "nuclei.tif", package="EBImage"))
+  display(y)
+
+  ## Read an image directly from a remote location by specifying its URL
+  try({
+    im = readImage("http://www-huber.embl.de/EBImage/ExampleImages/berlin.tif")
+    display(im, title = "Berlin Impressions")
+  })
+
+  ## Convert a PNG file into JPEG
+  tempfile = tempfile("", , ".jpeg")
+  writeImage(x, tempfile, quality = 85)
+  cat("Converted '", f, "' into '", tempfile, "'.\n", sep="")
+
+  ## Save a frame sequence
+  files = writeImage(y, tempfile("", , ".jpeg"), quality = 85)
+  cat("Files created: ", files, sep="\n")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

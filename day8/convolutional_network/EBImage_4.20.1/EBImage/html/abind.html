@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Combine Image Arrays</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for abind {EBImage}"><tr><td>abind {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Combine Image Arrays</h2>
+
+<h3>Description</h3>
+
+<p>Methods for function <code><a href="../../abind/html/abind.html">abind</a></code> from package <span class="pkg">abind</span> useful for combining <code>Image</code> arrays.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <code>Image</code> object or an array, containing the combined data arrays of the input objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<p><code>abind(...)</code>
+</p>
+
+
+<h3>Arguments</h3>
+
+
+<dl>
+<dt><code>...</code></dt><dd><p>Arguments to <code><a href="../../abind/html/abind.html">abind</a></code></p>
+</dd>
+</dl>
+
+
+
+<h3>Methods</h3>
+
+
+<dl>
+<dt><code>signature(... = "Image")</code></dt><dd>
+<p>This method is defined primarily for the sake of preserving the class of the combined <code>Image</code> objects. Unlike the original <code><a href="../../abind/html/abind.html">abind</a></code> function, if <code>dimnames</code> for all combined objects are <code>NULL</code> it does not introduce a list of empty <code>dimnames</code> for each dimension.
+</p>
+</dd>
+<dt><code>signature(... = "ANY")</code></dt><dd>
+<p>Dispatches to the original <code><a href="../../abind/html/abind.html">abind</a></code> function.
+</p>
+</dd>
+</dl>
+
+
+<h3>Author(s)</h3>
+
+<p>Andrzej Oleś, <a href="mailto:andrzej.oles@embl.de">andrzej.oles@embl.de</a>, 2017
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="combine.html">combine</a></code> provides a more convenient interface to merging images into an image sequence. Use <code><a href="tile.html">tile</a></code> to lay out images next to each other in a regular grid.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  f = system.file("images", "sample-color.png", package="EBImage")
+  x = readImage(f)
+  
+  ## combine images horizontally
+  y = abind(x, x, along=1)
+  display(y)
+  
+  ## stack images one on top of the other
+  z = abind(x, x, along=2)
+  display(z)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

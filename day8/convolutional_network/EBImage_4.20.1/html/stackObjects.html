@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Places detected objects into an image stack</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for stackObjects {EBImage}"><tr><td>stackObjects {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Places detected objects into an image stack</h2>
+
+<h3>Description</h3>
+
+<p>Places detected objects into an image stack.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+stackObjects(x, ref, combine=TRUE, bg.col='black', ext)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <code>Image</code> object or an array containing object masks.
+Object masks are sets of pixels with the same unique integer value.</p>
+</td></tr>
+<tr valign="top"><td><code>ref</code></td>
+<td>
+<p>An <code>Image</code> object or an array, containing the
+intensity values of the objects.</p>
+</td></tr>
+<tr valign="top"><td><code>combine</code></td>
+<td>
+<p>If <code>x</code> contains multiple images, specifies if the resulting
+list of image stacks with individual objects should be combined
+using <code>combine</code> into a single image stack.</p>
+</td></tr>
+<tr valign="top"><td><code>bg.col</code></td>
+<td>
+<p>Background pixel color.</p>
+</td></tr>
+<tr valign="top"><td><code>ext</code></td>
+<td>
+<p>A numeric controlling the size of the output image. 
+If missing, <code>ext</code> is estimated from data. See details.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>stackObjects</code> creates a set of <code>n</code> images of size
+(<code>2*ext+1</code>, <code>2*ext+1</code>), where <code>n</code> is the number of objects
+in <code>x</code>, and places each object of <code>x</code> in this set.
+</p>
+<p>If not specified, <code>ext</code> is estimated using the 98% quantile of
+m.majoraxis/2, where <code>m.majoraxis</code> is the semi-major axis
+descriptor extracted from <code>computeFeatures.moment</code>, taken over
+all the objects of the image <code>x</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <code>Image</code> object containing the stacked objects contained in
+<code>x</code>. If <code>x</code> contains multiple images and if <code>combine</code>
+is <code>TRUE</code>, <code>stackObjects</code> returns a list of <code>Image</code>
+objects.  
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Oleg Sklyar, <a href="mailto:osklyar@ebi.ac.uk">osklyar@ebi.ac.uk</a>, 2006-2007
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="combine.html">combine</a></code>, <code><a href="tile.html">tile</a></code>, <code><a href="computeFeatures.html">computeFeatures.moment</a></code> 
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  ## simple example
+  x = readImage(system.file('images', 'shapes.png', package='EBImage'))
+  x = x[110:512,1:130]
+  y = bwlabel(x)
+  display(normalize(y), title='Objects')
+  z = stackObjects(y, normalize(y))
+  display(z, title='Stacked objects')
+
+  ## load images
+  nuc = readImage(system.file('images', 'nuclei.tif', package='EBImage'))
+  cel = readImage(system.file('images', 'cells.tif', package='EBImage'))
+  img = rgbImage(green=cel, blue=nuc)
+  display(img, title='Cells')
+
+  ## segment nuclei
+  nmask = thresh(nuc, 10, 10, 0.05)
+  nmask = opening(nmask, makeBrush(5, shape='disc'))
+  nmask = fillHull(bwlabel(nmask))
+
+  ## segment cells, using propagate and nuclei as 'seeds'
+  ctmask = opening(cel&gt;0.1, makeBrush(5, shape='disc'))
+  cmask = propagate(cel, nmask, ctmask)
+
+  ## using paintObjects to highlight objects
+  res = paintObjects(cmask, img, col='#ff00ff')
+  res = paintObjects(nmask, res, col='#ffff00')
+  display(res, title='Segmented cells')
+
+  ## stacked cells
+  st = stackObjects(cmask, img)
+  display(st, title='Stacked objects')
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

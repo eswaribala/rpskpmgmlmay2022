@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Map a Greyscale Image to Color</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for colormap {EBImage}"><tr><td>colormap {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Map a Greyscale Image to Color</h2>
+
+<h3>Description</h3>
+
+<p>Maps a greyscale image to color using a color palette.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+colormap(x, palette = heat.colors(256L))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an <code>Image</code> object of color mode <code>Grayscale</code>, or an array</p>
+</td></tr>
+<tr valign="top"><td><code>palette</code></td>
+<td>
+<p>character vector containing the color palette</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <code>colormap</code> function first linearly maps the pixel intensity values
+of <code>x</code> to the integer range <code>1:length(palette)</code>. It then 
+uses these values as indices to the provided color palette to create
+a color version of the original image.
+</p>
+<p>The default palette contains 256 colors, which is the typical number of
+different shades in a 8bit grayscale image.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <code>Image</code> object of color mode <code>Color</code>, containing the color-mapped version
+of <code>x</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Andrzej Oleś, <a href="mailto:andrzej.oles@embl.de">andrzej.oles@embl.de</a>, 2016
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  x = readImage(system.file("images", "sample.png", package="EBImage"))
+
+  ## posterize an image using the topo.colors palette
+  y = colormap(x, topo.colors(8))
+
+  display(y, method="raster")
+
+  ## mimic MatLab's 'jet.colors' colormap
+  jet.colors = colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000"))
+  y = colormap(x, jet.colors(256))
+
+  display(y, method="raster")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

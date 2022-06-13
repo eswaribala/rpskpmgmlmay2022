@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Spatial linear transformations</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for resize {EBImage}"><tr><td>resize {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Spatial linear transformations</h2>
+
+<h3>Description</h3>
+
+<p>The following functions perform all spatial linear transforms: reflection, rotation,
+translation, resizing, and general affine transform.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+flip(x)
+flop(x)
+rotate(x, angle, filter = "bilinear", output.dim, output.origin, ...)
+translate(x, v, filter = "none", ...)
+resize(x, w, h, output.dim = c(w, h), output.origin = c(0, 0), antialias = FALSE, ...)
+
+affine(x, m, filter = c("bilinear", "none"), output.dim, bg.col = "black", antialias = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <code>Image</code> object or an array.</p>
+</td></tr>
+<tr valign="top"><td><code>angle</code></td>
+<td>
+<p>A numeric specifying the image rotation angle in degrees.</p>
+</td></tr>
+<tr valign="top"><td><code>v</code></td>
+<td>
+<p>A vector of 2 numbers denoting the translation vector in pixels.</p>
+</td></tr>
+<tr valign="top"><td><code>w, h</code></td>
+<td>
+<p>Width and height of the resized image. One of these arguments
+can be missing to enable proportional resizing.</p>
+</td></tr>  
+<tr valign="top"><td><code>filter</code></td>
+<td>
+<p>A character string indicating the interpolating sampling filter.
+Valid values are 'none' or 'bilinear'. See Details.</p>
+</td></tr>
+<tr valign="top"><td><code>output.dim</code></td>
+<td>
+<p>A vector of 2 numbers indicating the dimension of the output image. 
+For <code>affine</code> and <code>translate</code> the default is <code>dim(x)</code>, for <code>resize</code> it equals <code>c(w, h)</code>, and for <code>rotate</code> it defaults to the bounding box size of the rotated image.</p>
+</td></tr>
+<tr valign="top"><td><code>output.origin</code></td>
+<td>
+<p>A vector of 2 numbers indicating the output coordinates of the origin in pixels.</p>
+</td></tr>
+<tr valign="top"><td><code>m</code></td>
+<td>
+<p>A 3x2 matrix describing the affine transformation. See Details.</p>
+</td></tr>
+<tr valign="top"><td><code>bg.col</code></td>
+<td>
+<p>Color used to fill the background pixels, defaults to &quot;black&quot;. In the case of multi-frame images the value is recycled, and individual background for each frame can be specified by providing a vector.</p>
+</td></tr>
+<tr valign="top"><td><code>antialias</code></td>
+<td>
+<p>If <code>TRUE</code>, perform bilinear sampling at image edges using <code>bg.col</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Arguments to be passed to <code>affine</code>, such as <code>filter</code>, <code>output.dim</code>, <code>bg.col</code> or <code>antialias</code>.</p>
+</td></tr>  
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>flip</code> mirrors <code>x</code> around the image horizontal axis (vertical reflection).
+</p>
+<p><code>flop</code> mirrors <code>x</code> around the image vertical axis (horizontal reflection).
+</p>
+<p><code>rotate</code> rotates the image clockwise by the given angle around the 
+origin specified in <code>output.origin</code>. If no <code>output.origin</code> is 
+provided, the result will be centered in a recalculated bounding box unless
+<code>output.dim</code> is provided.
+</p>
+<p><code>resize</code> scales the image <code>x</code> to the desired dimensions.
+The transformation origin can be specified in <code>output.origin</code>. 
+For example, zooming about the <code>output.origin</code> can be achieved by setting
+<code>output.dim</code> to a value different from <code>c(w, h)</code>.
+</p>
+<p><code>affine</code> returns the affine transformation of <code>x</code>, where
+pixels coordinates, denoted by the matrix <code>px</code>, are
+transformed to <code>cbind(px, 1)%*%m</code>. 
+</p>
+<p>All spatial transformations except <code>flip</code> and <code>flop</code> are based on the 
+general <code>affine</code> transformation. Spatial interpolation can be either
+<code>none</code>, also called nearest neighbor, where the resulting pixel value equals to
+the closest pixel value, or <code>bilinear</code>, where the new 
+pixel value is computed by bilinear approximation of the 4 neighboring pixels. The
+<code>bilinear</code> filter gives smoother results.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <code>Image</code> object or an array, containing the transformed version
+of <code>x</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gregoire Pau, 2012
+</p>
+
+
+<h3>See Also</h3>
+
+ 
+<p><code><a href="transpose.html">transpose</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  x &lt;- readImage(system.file("images", "sample.png", package="EBImage"))
+  display(x)
+
+  display( flip(x) )
+  display( flop(x) ) 
+  display( resize(x, 128) )
+  display( rotate(x, 30) )
+  display( translate(x, c(120, -20)) )
+
+  m &lt;- matrix(c(0.6, 0.2, 0, -0.2, 0.3, 300), nrow=3)
+  display( affine(x, m) )
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

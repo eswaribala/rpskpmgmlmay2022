@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Tiling/untiling images</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for tile {EBImage}"><tr><td>tile {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Tiling/untiling images</h2>
+
+<h3>Description</h3>
+
+<p>Given a sequence of frames, <code>tile</code> generates a single image with frames tiled.
+<code>untile</code> is the inverse function and divides an image into a sequence of images.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+tile(x, nx=10, lwd=1, fg.col="#E4AF2B", bg.col="gray")
+untile(x, nim, lwd=1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <code>Image</code> object, an array or a list of these objects.</p>
+</td></tr> 
+<tr valign="top"><td><code>nx</code></td>
+<td>
+<p> The number of tiled images in a row. </p>
+</td></tr>
+<tr valign="top"><td><code>lwd</code></td>
+<td>
+<p> The width of the grid lines between tiled images, can be 0. </p>
+</td></tr>
+<tr valign="top"><td><code>fg.col</code></td>
+<td>
+<p>The color of the grid lines.</p>
+</td></tr>
+<tr valign="top"><td><code>bg.col</code></td>
+<td>
+<p>The color of the background for extra tiles.</p>
+</td></tr>
+<tr valign="top"><td><code>nim</code></td>
+<td>
+<p>A numeric vector of 2 elements for the number of images in both directions.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>After object segmentation, <code>tile</code> is a useful addition to <code>stackObjects</code>
+to have an overview of the segmented objects.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <code>Image</code> object or an array, containing the tiled/untiled version
+of <code>x</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Oleg Sklyar, <a href="mailto:osklyar@ebi.ac.uk">osklyar@ebi.ac.uk</a>, 2006-2007
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="stackObjects.html">stackObjects</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  ## make a set of blurred images
+  img = readImage(system.file("images", "sample-color.png", package="EBImage"))[257:768,,]
+  x = resize(img, 128, 128)
+  xt = list()
+  for (t in seq(0.1, 5, len=9)) xt=c(xt, list(gblur(x, s=t)))
+  xt = combine(xt)
+  display(xt, title='Blurred images')
+
+  ## tile
+  xt = tile(xt, 3)
+  display(xt, title='Tiles')
+
+  ## untile
+  xu = untile(img, c(3, 3))
+  display(xu, title='Blocks')
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

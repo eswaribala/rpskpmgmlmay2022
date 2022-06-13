@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Distance map transform</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for distmap {EBImage}"><tr><td>distmap {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Distance map transform</h2>
+
+<h3>Description</h3>
+
+<p>Computes the distance map transform of a binary image.
+The distance map is a matrix which contains for each pixel
+the distance to its nearest background pixel.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+distmap(x, metric=c('euclidean', 'manhattan'))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <code>Image</code> object or an array.
+<code>x</code> is considered as a binary image, whose pixels of value 0
+are considered as background ones and other pixels as
+foreground ones.</p>
+</td></tr>
+<tr valign="top"><td><code>metric</code></td>
+<td>
+<p>A character indicating which metric to use, L1 distance (<code>manhattan</code>) 
+or L2 distance (<code>euclidean</code>). Default is <code>euclidean</code>.</p>
+</td></tr> 
+</table>
+
+
+<h3>Details</h3>
+
+<p>A fast algorithm of complexity O(M*N*log(max(M,N))), where (M,N) are the
+dimensions of <code>x</code>, is used to compute the distance map.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <code>Image</code> object or an array, with pixels
+containing the distances to the nearest background points. 
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gregoire Pau, <a href="mailto:gpau@ebi.ac.uk">gpau@ebi.ac.uk</a>, 2008
+</p>
+
+
+<h3>References</h3>
+
+<p>M. N. Kolountzakis, K. N. Kutulakos. Fast Computation of the Euclidean
+Distance Map for Binary Images, Infor. Proc. Letters 43 (1992).</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  x = readImage(system.file("images", "shapes.png", package="EBImage"))
+  display(x)
+  dx = distmap(x)
+  display(dx/10, title='Distance map of x')
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

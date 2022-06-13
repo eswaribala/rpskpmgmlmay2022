@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: 2D Convolution Filter</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for filter2 {EBImage}"><tr><td>filter2 {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>2D Convolution Filter</h2>
+
+<h3>Description</h3>
+
+<p>Filters an image using the fast 2D FFT convolution product.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+filter2(x, filter, boundary = c("circular", "replicate"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <code>Image</code> object or an array.</p>
+</td></tr>
+<tr valign="top"><td><code>filter</code></td>
+<td>
+<p>An <code>Image</code> object or an array, with odd spatial
+dimensions. Must contain only one frame.</p>
+</td></tr>
+<tr valign="top"><td><code>boundary</code></td>
+<td>
+<p>Behaviour at image borders. The default is to wrap the image around borders. For other modes see details.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Linear filtering is useful to perform low-pass filtering (to blur
+images, remove noise...) and high-pass filtering (to detect
+edges, sharpen images). The function <code>makeBrush</code> is useful to
+generate filters.
+</p>
+<p>The default <code>"circular"</code> behaviour at boundaries is to wrap the image around borders.
+In the <code>"replicate"</code> mode pixels outside the bounds of the image are assumed to equal the nearest border pixel value.
+Numeric values of <code>boundary</code> yield linear convolution by padding the image with the given value(s).
+</p>
+<p>If <code>x</code> contains multiple frames, the filter is applied separately to each frame.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <code>Image</code> object or an array, containing the filtered version
+of <code>x</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Andrzej Oleś, Gregoire Pau
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="morphology.html">makeBrush</a></code>, <code><a href="../../stats/html/convolve.html">convolve</a></code>, <code><a href="../../stats/html/fft.html">fft</a></code>, <code><a href="EBImage-defunct.html">blur</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  x = readImage(system.file("images", "sample-color.png", package="EBImage"))
+  display(x, title='Sample')
+
+  ## Low-pass disc-shaped filter
+  f = makeBrush(21, shape='disc', step=FALSE)
+  display(f, title='Disc filter')
+  f = f/sum(f)
+  y = filter2(x, f)
+  display(y, title='Filtered image')
+
+  ## Low-pass filter with linear padded boundary
+  y = filter2(x, f, boundary=c(0,.5,1))
+  display(y, title='Filtered image with linear padded boundary')
+
+  ## High-pass Laplacian filter
+  la = matrix(1, nc=3, nr=3)
+  la[2,2] = -8
+  y = filter2(x, la)
+  display(y, title='Filtered image')
+  
+  ## High-pass Laplacian filter with replicated boundary
+  y = filter2(x, la, boundary='replicate')
+  display(y, title='Filtered image with replicated boundary')
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

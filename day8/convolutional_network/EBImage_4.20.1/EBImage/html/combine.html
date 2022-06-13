@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Combine images</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for combine {EBImage}"><tr><td>combine {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Combine images</h2>
+
+<h3>Description</h3>
+
+<p>Merges images to create image sequences.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+combine(x, y, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <code>Image</code> object, an array, or a list containing <code>Image</code> objects and arrays.</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>An <code>Image</code> object or an array.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p><code>Image</code> objects or arrays.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The function <code>combine</code> uses <code><a href="../../abind/html/abind.html">abind</a></code> to merge multi-dimensional
+arrays along the dimension depending on the
+color mode of <code>x</code>. If <code>x</code> is a <code>Grayscale</code> image or an array,
+image objects are combined along the third dimension, whereas when
+<code>x</code> is a <code>Color</code> image they are combined along the fourth dimension, leaving room on the third dimension for color
+channels.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <code>Image</code> object or an array.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gregoire Pau, Andrzej Oles, 2013
+</p>
+
+
+<h3>See Also</h3>
+
+<p>The method <code><a href="abind.html">abind</a></code> provides a more flexible interface which allows to specify the dimension along which to combine the images.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  ## combination of color images
+  img = readImage(system.file("images", "sample-color.png", package="EBImage"))[257:768,,]
+  x = combine(img, flip(img), flop(img))
+  display(x, all=TRUE)
+
+  ## Blurred images
+  x = resize(img, 128, 128)
+  xt = list()
+  for (t in seq(0.1, 5, len=9)) xt=c(xt, list(gblur(x, s=t)))
+  xt = combine(xt)
+  display(xt, title='Blurred images', all=TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

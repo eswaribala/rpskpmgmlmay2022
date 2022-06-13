@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Color and image color mode conversions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for channel {EBImage}"><tr><td>channel {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Color and image color mode conversions</h2>
+
+<h3>Description</h3>
+
+<p><code>channel</code> handles color space conversions between image modes.
+<code>rgbImage</code> combines <code>Grayscale</code> images into a <code>Color</code> one.
+<code>toRGB</code> is a wrapper function for convenient grayscale to RGB color space conversion; the call <code>toRGB(x)</code> returns the result of <code>channel(x, 'rgb')</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre> 
+channel(x, mode)
+rgbImage(red, green, blue)
+toRGB(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <code>Image</code> object or an array.</p>
+</td></tr>
+<tr valign="top"><td><code>mode</code></td>
+<td>
+<p> A character value specifying the target mode for
+conversion. See Details.</p>
+</td></tr>
+<tr valign="top"><td><code>red, green, blue</code></td>
+<td>
+<p><code>Image</code> objects in <code>Grayscale</code>
+color mode or arrays of the same dimension. If missing, a
+black image will be used.</p>
+</td></tr> 
+</table>
+
+
+<h3>Details</h3>
+
+<p>Conversion modes:
+</p>
+
+<dl>
+<dt><code>rgb</code></dt><dd><p>Converts a <code>Grayscale</code> image or an array
+into a <code>Color</code> image, replicating RGB channels.</p>
+</dd>
+<dt><code>gray, grey</code></dt><dd><p>Converts a <code>Color</code> image into a
+<code>Grayscale</code> image, using uniform 1/3 RGB weights.</p>
+</dd>
+<dt><code>luminance</code></dt><dd><p>Luminance-preserving <code>Color</code> to <code>Grayscale</code> conversion
+using CIE 1931 luminance weights: 0.2126 * R + 0.7152 * G + 0.0722 * B.</p>
+</dd>
+<dt><code>red, green, blue</code></dt><dd><p>Extracts the <code>red</code>, <code>green</code> or
+<code>blue</code> channel from a <code>Color</code> image. Returns a
+<code>Grayscale</code> image.</p>
+</dd>
+<dt><code>asred, asgreen, asblue</code></dt><dd><p>Converts a <code>Grayscale</code>
+image or an array into a <code>Color</code> image of the specified hue.</p>
+</dd>
+</dl>
+
+<p>NOTE: <code>channel</code> changes the pixel intensities, unlike <code>colorMode</code>
+which just changes the way that EBImage renders an image.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <code>Image</code> object or an array.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Oleg Sklyar, <a href="mailto:osklyar@ebi.ac.uk">osklyar@ebi.ac.uk</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="Image.html">colorMode</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ x = readImage(system.file("images", "shapes.png", package="EBImage"))
+ display(x)
+ y = channel(x, 'asgreen')
+ display(y)
+
+ ## rgbImage
+ x = readImage(system.file('images', 'nuclei.tif', package='EBImage'))
+ y = readImage(system.file('images', 'cells.tif', package='EBImage'))
+ display(x, title='Cell nuclei')
+ display(y, title='Cell bodies')
+
+ cells = rgbImage(green=1.5*y, blue=x)
+ display(cells, title='Cells')
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

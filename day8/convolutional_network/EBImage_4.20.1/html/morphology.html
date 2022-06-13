@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Perform morphological operations on images</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for morphology {EBImage}"><tr><td>morphology {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Perform morphological operations on images</h2>
+
+<h3>Description</h3>
+
+<p>Functions to perform morphological operations on binary and grayscale images.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dilate(x, kern)
+erode(x, kern)
+opening(x, kern)
+closing(x, kern)
+whiteTopHat(x, kern)
+blackTopHat(x, kern)
+selfComplementaryTopHat(x, kern)
+
+makeBrush(size, shape=c('box', 'disc', 'diamond', 'Gaussian', 'line'), step=TRUE, sigma=0.3, angle=45)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <code>Image</code> object or an array.</p>
+</td></tr>
+<tr valign="top"><td><code>kern</code></td>
+<td>
+<p>An <code>Image</code> object or an array, containing the
+structuring element. <code>kern</code> is considered as a binary image, with
+pixels of value 0 being the background and pixels with values other than 0 being the foreground.</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>A numeric containing the size of the brush in pixels. This should be an odd number; even numbers are rounded to the next odd one, i.e., <code>size = 4</code> has the same effect as <code>size = 5</code>. Default is 5</p>
+</td></tr>
+<tr valign="top"><td><code>shape</code></td>
+<td>
+<p>A character vector indicating the shape of the brush. Can
+be <code>box</code>, <code>disc</code>, <code>diamond</code>, <code>Gaussian</code> or <code>line</code>. Default is
+<code>box</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>step</code></td>
+<td>
+<p>a logical indicating if the brush is binary. Default is
+<code>TRUE</code>. This argument is relevant only for the <code>disc</code> and
+<code>diamond</code> shapes.</p>
+</td></tr>
+<tr valign="top"><td><code>sigma</code></td>
+<td>
+<p>An optional numeric containing the standard deviation of
+the <code>Gaussian</code> shape. Default is 0.3.</p>
+</td></tr>
+<tr valign="top"><td><code>angle</code></td>
+<td>
+<p>An optional numeric containing the angle at which the line should be drawn. The angle is
+one between the top of the image and the line.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>dilate</code> applies the mask <code>kern</code> by positioning its center over every pixel of the
+image <code>x</code>, the output value of the pixel is the maximum value of <code>x</code>
+covered by the mask. In case of binary images this is equivalent of putting the mask over every background pixel, and setting it to foreground if any of the pixels covered by the mask is from the foreground.
+</p>
+<p><code>erode</code> applies the mask <code>kern</code> by positioning its center over every pixel of the
+image <code>x</code>, the output value of the pixel is the minimum value of <code>x</code>
+covered by the mask. In case of binary images this is equivalent of putting the mask over every foreground pixel, and setting it to background if any of the pixels covered by the mask is from the background.
+</p>
+<p><code>opening</code> is an erosion followed by a dilation and <code>closing</code> is a dilation followed by an erosion.
+</p>
+<p><code>whiteTopHat</code> returns the difference between the original image <code>x</code> and its opening by the structuring element <code>kern</code>.
+</p>
+<p><code>blackTopHat</code> subtracts the original image <code>x</code> from its closing by the structuring element <code>kern</code>.
+</p>
+<p><code>selfComplementaryTopHat</code> is the sum of the <code>whiteTopHat</code> and the <code>blackTopHat</code>, simplified
+the difference between the <code>closing</code> and the <code>opening</code> of the image.
+</p>
+<p><code>makeBrush</code> generates brushes of various sizes and shapes that can be used
+as structuring elements.
+</p>
+
+
+<h4>Processing Pixels at Image Borders (Padding Behavior)</h4>
+
+<p>Morphological functions position the center of the structuring element over each pixel in the input image. For pixels close to the edge of an image, parts of the neighborhood defined by the structuring element may extend past the border of the image. In such a case, a value is assigned to these undefined pixels, as if the image was padded with additional rows and columns. The value of these padding pixels varies for dilation and erosion operations. For dilation, pixels beyond the image border are assigned the minimum value afforded by the data type, which in case of binary images is equivalent of setting them to background. For erosion, pixels beyond the image border are assigned the maximum value afforded by the data type, which in case of binary images is equivalent of setting them to foreground.</p>
+
+
+
+<h3>Value</h3>
+
+<p><code>dilate</code>, <code>erode</code>, <code>opening</code>, <code>whiteTopHat</code>, <code>blackTopHat</code> and
+<code>selfComplementaryTopHat</code> return the transformed <code>Image</code> object
+or array <code>x</code>, after the corresponding morphological operation.
+</p>
+<p><code>makeBrush</code> generates a 2D matrix containing the desired brush.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Morphological operations are implemented using the efficient Urbach-Wilkinson algorithm [1]. Its required computing time is independent of both the image content and the number of gray levels used.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Ilia Kats &lt;<a href="mailto:ilia-kats@gmx.net">ilia-kats@gmx.net</a>&gt; (2012), Andrzej Oles &lt;<a href="mailto:andrzej.oles@embl.de">andrzej.oles@embl.de</a>&gt; (2015)
+</p>
+
+
+<h3>References</h3>
+
+<p>[1] E. R. Urbach and M.H.F. Wilkinson, &quot;Efficient 2-D grayscale morphological transformations with arbitrary flat structuring elements&quot;, IEEE Trans Image Process 17(1), 1-8, 2008
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>	
+  x = readImage(system.file("images", "shapes.png", package="EBImage"))
+  kern = makeBrush(5, shape='diamond')  
+  
+  display(x)
+  display(kern, title='Structuring element')
+  display(erode(x, kern), title='Erosion of x')
+  display(dilate(x, kern), title='Dilatation of x')
+
+  ## makeBrush
+  display(makeBrush(99, shape='diamond'))
+  display(makeBrush(99, shape='disc', step=FALSE))
+  display(2000*makeBrush(99, shape='Gaussian', sigma=10))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

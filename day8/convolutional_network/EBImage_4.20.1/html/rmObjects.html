@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Object removal and re-indexation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rmObjects {EBImage}"><tr><td>rmObjects {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Object removal and re-indexation</h2>
+
+<h3>Description</h3>
+
+<p>The <code>rmObjects</code> functions deletes objects from an image
+by setting their pixel intensity values to 0.
+<code>reenumerate</code> re-enumerates all objects in an image from 0 (background)
+to the actual number of objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  rmObjects(x, index, reenumerate = TRUE)
+
+  reenumerate(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <code>Image</code> object in <code>Grayscale</code> color mode or an
+array containing object masks. Object masks are sets of pixels
+with the same unique integer value.</p>
+</td></tr>
+<tr valign="top"><td><code>index</code></td>
+<td>
+<p>A numeric vector (or a list of vectors if <code>x</code> contains multiple frames) 
+containing the indexes of objects to remove in the frame.</p>
+</td></tr>
+<tr valign="top"><td><code>reenumerate</code></td>
+<td>
+<p>Logical, should all the objects in the image be re-indexed afterwards (default).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An <code>Image</code> object or an array, containing the new objects.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Oleg Sklyar, <a href="mailto:osklyar@ebi.ac.uk">osklyar@ebi.ac.uk</a>, 2006-2007
+</p>
+
+
+<h3>See Also</h3>
+
+ 
+<p><code><a href="bwlabel.html">bwlabel</a></code>, <code><a href="watershed.html">watershed</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  ## make objects
+  x = readImage(system.file('images', 'shapes.png', package='EBImage'))
+  x = x[110:512,1:130]
+  y = bwlabel(x)
+  
+  ## number of objects found
+  max(y)
+  
+  display(normalize(y), title='Objects')
+  
+  ## remove every second letter
+  objects = list(
+    seq.int(from = 2, to = max(y), by = 2),
+    seq.int(from = 1, to = max(y), by = 2)
+    )
+  z = rmObjects(combine(y, y), objects)
+  
+  display(normalize(z), title='Object removal')
+  
+  ## the number of objects left in each image
+  apply(z, 3, max)
+  
+  ## perform object removal without re-enumerating
+  z = rmObjects(y, objects, reenumerate = FALSE)
+  
+  ## labels of objects left
+  unique(as.vector(z))[-1L]
+  
+  ## re-index objects
+  z = reenumerate(z)
+  unique(as.vector(z))[-1L]
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

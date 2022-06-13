@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Package overview</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for EBImage {EBImage}"><tr><td>EBImage {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Package overview</h2>
+
+<h3>Description</h3>
+
+<p><code>EBImage</code> is an image processing and analysis package for R. Its primary
+goal is to enable automated analysis of large sets of images such as those
+obtained in high throughput automated microscopy.
+</p>
+<p><code>EBImage</code> relies on the <code>Image</code> object to store and process images
+but also works on multi-dimensional arrays.
+</p>
+
+
+<h3>Package content</h3>
+
+<p>Image methods
+</p>
+
+<ul>
+<li> <p><code>Image</code>
+</p>
+</li>
+<li> <p><code>as.Image</code>, <code>is.Image</code>, <code>as.raster</code>
+</p>
+</li>
+<li> <p><code>colorMode</code>, <code>imageData</code>
+</p>
+</li>
+<li> <p><code>getFrame</code>, <code>numberOfFrames</code>
+</p>
+</li></ul>
+
+<p>Image I/O, display
+</p>
+
+<ul>
+<li> <p><code>readImage</code>, <code>writeImage</code>
+</p>
+</li>
+<li> <p><code>display</code>
+</p>
+</li>
+<li> <p><code>image</code>
+</p>
+</li></ul>
+
+<p>Spatial transforms
+</p>
+
+<ul>
+<li> <p><code>resize</code>, <code>flip</code>, <code>flop</code>, <code>transpose</code>
+</p>
+</li>
+<li> <p><code>rotate</code>, <code>translate</code>, <code>affine</code>
+</p>
+</li></ul>
+
+<p>Image segmentation, objects manipulation
+</p>
+
+<ul>
+<li> <p><code>thresh</code>, <code>bwlabel</code>, <code>otsu</code>
+</p>
+</li>
+<li> <p><code>watershed</code>, <code>propagate</code>
+</p>
+</li>
+<li> <p><code>ocontour</code>
+</p>
+</li>
+<li> <p><code>paintObjects</code>, <code>rmObjects</code>, <code>reenumerate</code>
+</p>
+</li></ul>
+
+<p>Image enhancement, filtering
+</p>
+
+<ul>
+<li> <p><code>normalize</code>
+</p>
+</li>
+<li> <p><code>filter2</code>, <code>gblur</code>, <code>medianFilter</code>
+</p>
+</li></ul>
+
+<p>Morphological operations
+</p>
+
+<ul>
+<li> <p><code>makeBrush</code>
+</p>
+</li>
+<li> <p><code>erode</code>, <code>dilate</code>, <code>opening</code>, <code>closing</code>
+</p>
+</li>
+<li> <p><code>whiteTopHat</code>, <code>blackTopHat</code>, <code>selfComplementaryTopHat</code>
+</p>
+</li>
+<li> <p><code>distmap</code>
+</p>
+</li>
+<li> <p><code>floodFill</code>, <code>fillHull</code>
+</p>
+</li></ul>
+
+<p>Color space manipulation
+</p>
+  
+<ul>
+<li> <p><code>rgbImage</code>, <code>channel</code>, <code>toRGB</code>
+</p>
+</li></ul>
+
+<p>Image stacking, combining, tiling
+</p>
+ 
+<ul>
+<li> <p><code>stackObjects</code>
+</p>
+</li>
+<li> <p><code>combine</code>
+</p>
+</li>
+<li> <p><code>tile</code>, <code>untile</code>
+</p>
+</li></ul>
+
+<p>Drawing on images
+</p>
+
+<ul>
+<li> <p><code>drawCircle</code>
+</p>
+</li></ul>
+
+<p>Features extraction
+</p>
+
+<ul>
+<li> <p><code>computeFeatures</code>
+</p>
+</li>
+<li> <p><code>computeFeatures.basic</code>, <code>computeFeatures.moment</code>, <code>computeFeatures.shape</code>, <code>computeFeatures.haralick</code>
+</p>
+</li>
+<li> <p><code>standardExpandRef</code>
+</p>
+</li></ul>
+
+<p>Defunct
+</p>
+
+<ul>
+<li> <p><code>blur</code>, <code>equalize</code>
+</p>
+</li>
+<li> <p><code>drawtext</code>, <code>drawfont</code>
+</p>
+</li>
+<li> <p><code>getFeatures</code>, <code>hullFeatures</code>, <code>zernikeMoments</code>
+</p>
+</li>
+<li> <p><code>edgeProfile</code>, <code>edgeFeatures</code>, 
+</p>
+</li>
+<li> <p><code>haralickFeatures</code>, <code>haralickMatrix</code>
+</p>
+</li>
+<li> <p><code>moments</code>, <code>cmoments</code>, <code>smoments</code>, <code>rmoments</code>
+</p>
+</li></ul>
+
+
+
+<h3>Authors</h3>
+
+<p>Oleg Sklyar, <a href="mailto:osklyar@ebi.ac.uk">osklyar@ebi.ac.uk</a>, Copyright 2005-2007
+</p>
+<p>Gregoire Pau, <a href="mailto:gpau@ebi.ac.uk">gpau@ebi.ac.uk</a>
+</p>
+<p>Wolfgang Huber, <a href="mailto:huber@ebi.ac.uk">huber@ebi.ac.uk</a>
+</p>
+<p>Andrzej Oles, <a href="mailto:andrzej.oles@embl.de">andrzej.oles@embl.de</a>
+</p>
+<p>Mike Smith, <a href="mailto:msmith@ebi.ac.uk">msmith@ebi.ac.uk</a>
+</p>
+<pre>
+  European Bioinformatics Institute
+  European Molecular Biology Laboratory
+  Wellcome Trust Genome Campus
+  Hinxton 
+  Cambridge CB10 1SD
+  UK
+  </pre>
+<p>The code of <code><a href="propagate.html">propagate</a></code> is based on the <code>CellProfiler</code> 
+with permission granted to distribute this particular part under LGPL, the 
+corresponding copyright (Jones, Carpenter) applies.
+</p>
+<p>The source code is released under <code>LGPL</code> (see the <code>LICENSE</code> 
+file in the package root for the complete license wording).
+</p>
+<p>This library is free software; you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the
+License, or (at your option) any later version. This library is distributed
+in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+</p>
+<p>See the GNU Lesser General Public License for more details. For LGPL license 
+wording see <a href="http://www.gnu.org/licenses/lgpl.html">http://www.gnu.org/licenses/lgpl.html</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  example(readImage)
+  example(display)
+  example(rotate)
+  example(propagate)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

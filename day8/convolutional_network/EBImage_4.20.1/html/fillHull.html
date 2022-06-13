@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Fill holes in objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for fillHull {EBImage}"><tr><td>fillHull {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Fill holes in objects</h2>
+
+<h3>Description</h3>
+
+<p>Fill holes in objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+fillHull(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <code>Image</code> object or an array.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>fillHull</code> fills holes in the objects defined in <code>x</code>, where
+objects are sets of pixels with the same unique integer value.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <code>Image</code> object or an array, containing the transformed version
+of <code>x</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gregoire Pau, Oleg Sklyar; 2007
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="bwlabel.html">bwlabel</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  x = readImage(system.file('images', 'nuclei.tif', package='EBImage'))
+  display(x)
+
+  y = thresh(x, 10, 10, 0.05)
+  display(y, title='Cell nuclei')
+
+  y = fillHull(y)
+  display(y, title='Cell nuclei without holes')
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

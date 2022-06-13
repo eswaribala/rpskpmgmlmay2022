@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Calculate Otsu's threshold</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for otsu {EBImage}"><tr><td>otsu {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Calculate Otsu's threshold</h2>
+
+<h3>Description</h3>
+
+<p>Returns a threshold value based on Otsu's method, which can be then used to reduce the grayscale image to a binary image.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+otsu(x, range = c(0, 1), levels = 256)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A <code>Grayscale</code> <code>Image</code> object or an array.</p>
+</td></tr>
+<tr valign="top"><td><code>range</code></td>
+<td>
+<p>Numeric vector of length 2 specifying the histogram range used for thresholding.</p>
+</td></tr>
+<tr valign="top"><td><code>levels</code></td>
+<td>
+<p>Number of grayscale levels.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Otsu's thresholding method [1] is useful to automatically perform clustering-based image thresholding. The algorithm assumes that the distribution of image pixel intensities follows a bi-modal histogram, and separates those pixels into two classes (e.g. foreground and background). 
+The optimal threshold value is determined by minimizing the combined intra-class variance.
+</p>
+<p>The threshold value is calculated for each image frame separately resulting in a output vector of length equal to the total number of frames in the image.
+</p>
+<p>The default number of <code>levels</code> corresponds to the number of gray levels of an 8bit image. It is recommended to adjust this value according to the bit depth of the processed data, i.e. set <code>levels</code> to 2^16 = 65536 when working with 16bit images.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A vector of length equal to the total number of frames in <code>x</code>. Each vector element contains the Otsu's threshold value calculated for the corresponding image frame.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Philip A. Marais <a href="mailto:philipmarais@gmail.com">philipmarais@gmail.com</a>, Andrzej Oles <a href="mailto:andrzej.oles@embl.de">andrzej.oles@embl.de</a>, 2014
+</p>
+
+
+<h3>References</h3>
+
+<p>[1] Nobuyuki Otsu, &quot;A threshold selection method from gray-level histograms&quot;. IEEE Trans. Sys., Man., Cyber. 9 (1): 62-66. doi:10.1109/TSMC.1979.4310076 (1979)
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="thresh.html">thresh</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  x = readImage(system.file("images", "sample.png", package="EBImage"))
+  display(x)
+  
+  ## threshold using Otsu's method
+  y = x &gt; otsu(x)
+  display(y)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

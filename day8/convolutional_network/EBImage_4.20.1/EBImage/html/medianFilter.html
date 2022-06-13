@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: 2D constant time median filtering</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for medianFilter {EBImage}"><tr><td>medianFilter {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>2D constant time median filtering</h2>
+
+<h3>Description</h3>
+
+<p>Process an image using Perreault's modern constant-time median filtering algorithm [1, 2].
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+medianFilter(x, size, cacheSize=512)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an <code>Image</code> object or an array.</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>integer, median filter radius.</p>
+</td></tr>
+<tr valign="top"><td><code>cacheSize</code></td>
+<td>
+<p>integer, the L2 cache size of the system CPU in kB.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Median filtering is useful as a smoothing technique, e.g. in the removal
+of speckling noise.
+</p>
+<p>For a filter of radius <code>size</code>, the median kernel is a <code>2*size+1</code>
+times <code>2*size+1</code> square.
+</p>
+<p>The input image <code>x</code> should contain pixel values in the range from 0 to 1, 
+inclusive; values lower than 0 or higher than 1 are clipped before applying 
+the filter. Internal processing is performed using 16-bit precision. The 
+behavior at image boundaries is such as the source image has been padded with
+pixels whose values equal the nearest border pixel value.
+</p>
+<p>If the image contains multiple channels or frames, 
+the filter is applied to each one of them separately.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <code>Image</code> object or an array, containing the filtered version
+of <code>x</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Joseph Barry, <a href="mailto:joseph.barry@embl.de">joseph.barry@embl.de</a>, 2012
+</p>
+<p>Andrzej Oleś, <a href="mailto:andrzej.oles@embl.de">andrzej.oles@embl.de</a>, 2016
+</p>
+
+
+<h3>References</h3>
+
+<p>[1] S. Perreault and P. Hebert, &quot;Median Filtering in Constant Time&quot;, IEEE Trans Image Process 16(9), 2389-2394, 2007
+</p>
+<p>[2] <a href="http://nomis80.org/ctmf.html">http://nomis80.org/ctmf.html</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="gblur.html">gblur</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  x = readImage(system.file("images", "nuclei.tif", package="EBImage"))
+  display(x, title='Nuclei')
+  y = medianFilter(x, 5)  
+  display(y, title='Filtered nuclei')
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

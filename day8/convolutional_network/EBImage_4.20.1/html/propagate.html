@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Voronoi-based segmentation on image manifolds</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for propagate {EBImage}"><tr><td>propagate {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Voronoi-based segmentation on image manifolds</h2>
+
+<h3>Description</h3>
+
+<p>Find boundaries between adjacent regions in an image, where seeds
+have been already identified in the individual regions to be
+segmented. The method finds the Voronoi region of each seed on
+a manifold with a metric controlled by local image properties.
+The method is motivated by the problem of finding the borders of
+cells in microscopy images, given a labelling of the nuclei
+in the images.
+</p>
+<p>Algorithm and implementation are from Jones et al. [1].
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+propagate(x, seeds, mask=NULL, lambda=1e-4)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <code>Image</code> object or an array, containing the image to segment.</p>
+</td></tr>
+<tr valign="top"><td><code>seeds</code></td>
+<td>
+<p>An <code>Image</code> object or an array, containing the seeding objects of
+the already identified regions.</p>
+</td></tr>	
+<tr valign="top"><td><code>mask</code></td>
+<td>
+<p>An optional <code>Image</code> object or an array, containing
+the binary image mask of the regions that can be segmented. If missing, 
+the whole image is segmented.</p>
+</td></tr>
+<tr valign="top"><td><code>lambda</code></td>
+<td>
+<p>A numeric value. The regularization parameter used in the
+metric, determining the trade-off between the Euclidean distance in the
+image plane and the contribution of the gradient of <code>x</code>. See details.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The method operates by computing a discretized approximation of the
+Voronoi regions for given seed points on a Riemann manifold with a
+metric controlled by local image features.
+</p>
+<p>Under this metric, the infinitesimal distance d between points
+v and v+dv is defined by: 
+</p>
+<pre>d^2 = ( (t(dv)*g)^2 + lambda*t(dv)*dv )/(lambda + 1) </pre><p>,
+where g is the gradient of image <code>x</code> at point v.
+</p>
+<p><code>lambda</code> controls the weight of the Euclidean distance term. 
+When <code>lambda</code> tends to infinity, d tends to the Euclidean
+distance. When <code>lambda</code> tends to 0, d tends to the intensity
+gradient of the image.
+</p>
+<p>The gradient is
+computed on a neighborhood of 3x3 pixels.
+</p>
+<p>Segmentation of the Voronoi regions in the vicinity of flat areas
+(having a null gradient) with small values of <code>lambda</code> can
+suffer from artifacts coming from the metric approximation.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <code>Image</code> object or an array, containing the labelled objects.
+</p>
+
+
+<h3>License</h3>
+
+<p>The implementation is based on CellProfiler C++ source code [2, 3].
+An LGPL license was granted by Thouis Jones to use this part of
+CellProfiler's code for the <code>propagate</code> function.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>The original CellProfiler code is from Anne Carpenter &lt;carpenter@wi.mit.edu&gt;,
+Thouis Jones &lt;thouis@csail.mit.edu&gt;, In Han Kang &lt;inthek@mit.edu&gt;.
+Responsible for this implementation: Greg Pau.
+</p>
+
+
+<h3>References</h3>
+
+<p>[1] T. Jones, A. Carpenter and P. Golland,
+&quot;Voronoi-Based Segmentation of Cells on Image Manifolds&quot;,
+CVBIA05 (535-543), 2005
+</p>
+<p>[2] A. Carpenter, T.R. Jones, M.R. Lamprecht, C. Clarke, I.H. Kang,
+O. Friman, D. Guertin, J.H. Chang, R.A. Lindquist, J. Moffat,
+P. Golland and D.M. Sabatini, &quot;CellProfiler: image analysis software
+for identifying and quantifying cell phenotypes&quot;, Genome Biology 2006, 7:R100
+</p>
+<p>[3] CellProfiler: http://www.cellprofiler.org
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="bwlabel.html">bwlabel</a></code>, <code><a href="watershed.html">watershed</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  ## a paraboloid mountain in a plane
+  n = 400
+  x = (n/4)^2 - matrix(
+	(rep(1:n, times=n) - n/2)^2 + (rep(1:n, each=n) - n/2)^2,
+	nrow=n, ncol=n)
+  x = normalize(x)
+
+  ## 4 seeds
+  seeds = array(0, dim=c(n,n))
+  seeds[51:55, 301:305] = 1
+  seeds[301:305, 101:105] = 2
+  seeds[201:205, 141:145] = 3
+  seeds[331:335, 351:355] = 4
+
+  lambda = 10^seq(-8, -1, by=1)
+  segmented = Image(dim=c(dim(x), length(lambda)))
+
+  for(i in seq_along(lambda)) {
+    prop = propagate(x, seeds, lambda=lambda[i])
+    prop = prop/max(prop)
+    segmented[,,i] = prop
+  }
+
+  display(x, title='Image')
+  display(seeds/max(seeds), title='Seeds')
+  display(segmented, title="Voronoi regions", all=TRUE)
+  
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

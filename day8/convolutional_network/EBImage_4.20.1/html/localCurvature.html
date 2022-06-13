@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Local Curvature</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for localCurvature {EBImage}"><tr><td>localCurvature {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Local Curvature</h2>
+
+<h3>Description</h3>
+
+<p>Computes signed curvature along a line.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+localCurvature(x, h, maxk)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A data frame or matrix of dimensions N x 2 containing the coordinates 
+of the line, where N is the number of points. The points should be ordered according 
+to their position on the line. The columns should contain the x and y coordinates. 
+The curvature calculation is unaffected by any permutation of the columns.
+Directly accepts a list element from <code>ocontour</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>h</code></td>
+<td>
+<p>Specifies the length of the smoothing window. See <code>locfit::lp</code> for more details.</p>
+</td></tr>
+<tr valign="top"><td><code>maxk</code></td>
+<td>
+<p>See <code>locfit::locfit.raw</code> for details.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>localCurvature</code> fits a local non-parametric smoothing line (polynomial of degree 2) 
+at each point along the line segment, and computes the curvature locally using numerical derivatives.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Returns a <code>list</code> containing the contour coordinates <code>x</code>, the signed curvature at each point <code>curvature</code> 
+and the arc length of the contour <code>length</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Joseph Barry, Wolfgang Huber, 2013
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="ocontour.html">ocontour</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  ## curvature goes as the inverse of the radius of a circle
+  range=seq(3.5,33.5,by=2)
+  plotRange=seq(0.5,33.5,length=100)
+  circleRes=array(dim=length(range))
+  names(circleRes)=range
+  for (i in  seq_along(1:length(range))) {
+   y=as.Image(makeBrush('disc', size=2*range[i]))
+   y=ocontour(y)[[1]]
+   circleRes[i]=abs(mean(localCurvature(x=y,h=range[i])$curvature, na.rm=TRUE))
+  }
+  plot(range, circleRes, ylim=c(0,max(circleRes, na.rm=TRUE)), xlab='Circle Radius', ylab='Curvature', type='p', xlim=range(plotRange))
+  points(plotRange, 1/plotRange, type='l')
+
+  ## Calculate curvature
+  x = readImage(system.file("images", "shapes.png", package="EBImage"))[25:74, 60:109]
+  x = resize(x, 200)
+  y = gblur(x, 3) &gt; .3
+  display(y)
+  
+  contours = ocontour(bwlabel(y))
+  c = localCurvature(x=contours[[1]], h=11)
+  i = c$curvature &gt;= 0
+  pos = neg = array(0, dim(x))
+  pos[c$contour[i,]+1]  = c$curvature[i]
+  neg[c$contour[!i,]+1] = -c$curvature[!i]
+  display(10*(rgbImage(pos, , neg)), title = "Image curvature")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

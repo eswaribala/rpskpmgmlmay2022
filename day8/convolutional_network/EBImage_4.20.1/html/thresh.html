@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Adaptive thresholding</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for thresh {EBImage}"><tr><td>thresh {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Adaptive thresholding</h2>
+
+<h3>Description</h3>
+
+<p>Thresholds an image using a moving rectangular window.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+thresh(x, w=5, h=5, offset=0.01)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <code>Image</code> object or an array.</p>
+</td></tr>
+<tr valign="top"><td><code>w, h</code></td>
+<td>
+<p>Half width and height of the moving rectangular window.</p>
+</td></tr> 
+<tr valign="top"><td><code>offset</code></td>
+<td>
+<p>Thresholding offset from the averaged value.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function returns the binary image resulting from the comparison
+between an image and its filtered version with a rectangular window.
+It is equivalent of doing 
+<code>{
+  f = matrix(1, nc=2*w+1, nr=2*h+1); 
+  f = f/sum(f); 
+  x &gt; (filter2(x, f, boundary="replicate") + offset)
+  }</code> 
+but faster. The function <code>filter2</code> provides hence more 
+flexibility than <code>thresh</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <code>Image</code> object or an array, containing the transformed version
+of <code>x</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Oleg Sklyar, <a href="mailto:osklyar@ebi.ac.uk">osklyar@ebi.ac.uk</a>,  2005-2007
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code>filter2</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  x = readImage(system.file('images', 'nuclei.tif', package='EBImage'))
+  display(x)
+  y = thresh(x, 10, 10, 0.05)
+  display(y)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

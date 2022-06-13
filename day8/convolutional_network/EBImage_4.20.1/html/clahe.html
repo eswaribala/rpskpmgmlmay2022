@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Contrast Limited Adaptive Histogram Equalization</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for clahe {EBImage}"><tr><td>clahe {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Contrast Limited Adaptive Histogram Equalization</h2>
+
+<h3>Description</h3>
+
+<p>Improve contrast locally by performing adaptive histogram equalization.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+clahe(x, nx = 8, ny = nx, bins = 256, limit = 2, keep.range = FALSE) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an <code>Image</code> object or an array.</p>
+</td></tr>
+<tr valign="top"><td><code>nx</code></td>
+<td>
+<p>integer, number of contextual regions in the X direction (min 2, max 256)</p>
+</td></tr>
+<tr valign="top"><td><code>ny</code></td>
+<td>
+<p>integer, number of contextual regions in the Y direction (min 2, max 256)</p>
+</td></tr>
+<tr valign="top"><td><code>bins</code></td>
+<td>
+<p>integer, number of greybins for histogram (&quot;dynamic range&quot;). Smaller values (eg. 128) speed up processing while still producing good quality output.</p>
+</td></tr>
+<tr valign="top"><td><code>limit</code></td>
+<td>
+<p>double, normalized clip limit (higher values give more contrast).  A clip limit smaller than 0 results in standard (non-contrast limited) AHE.</p>
+</td></tr>
+<tr valign="top"><td><code>keep.range</code></td>
+<td>
+<p>logical, retain image minimum and maximum values rather then use the full available range</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Adaptive histogram equalization (AHE) is a contrast enhancement 
+technique which overcomes the limitations of standard histogram equalization.
+Unlike ordinary histogram equalization the adaptive method redistributes the lightness values 
+of the image based on several histograms, each corresponding to a distinct section of the image.
+It is therefore useful for improving the local contrast and enhancing the definitions of edges in each region of an image.
+However, AHE has a tendency to overamplify noise in relatively homogeneous 
+regions of an image. Contrast limited adaptive histogram equalization (CLAHE) prevents this by limiting the amplification.
+</p>
+<p>The function is based on the implementation by Karel Zuiderveld [1].
+This implementation assumes that the X- and Y image dimensions are an integer
+multiple of the X- and Y sizes of the contextual regions.
+The input image <code>x</code> should contain pixel values in the range from 0 to 1, 
+inclusive; values lower than 0 or higher than 1 are clipped before applying 
+the filter. Internal processing is performed in 16-bit precision.
+If the image contains multiple channels or frames, 
+the filter is applied to each one of them separately.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <code>Image</code> object or an array, containing the filtered version
+of <code>x</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The interpolation step of the original implementation by Karel Zuiderveld [1] 
+was modified to use double precision arithmetic in order to make the filter 
+rotationally invariant for even-sized contextual regions, and the result is 
+properly rounded rather than truncated towards 0 in order to avoid a 
+systematic shift of pixel values.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Andrzej Oleś, <a href="mailto:andrzej.oles@embl.de">andrzej.oles@embl.de</a>, 2017
+</p>
+
+
+<h3>References</h3>
+
+<p>[1] K. Zuiderveld: Contrast Limited Adaptive Histogram Equalization. In: P. Heckbert: Graphics Gems IV, Academic Press 1994
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="equalize.html">equalize</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  x = readImage(system.file("images", "sample-color.png", package="EBImage"))
+  y = clahe(x)  
+  display(y)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

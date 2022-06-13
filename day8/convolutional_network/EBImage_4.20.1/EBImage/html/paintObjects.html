@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Mark objects in images</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for paintObjects {EBImage}"><tr><td>paintObjects {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Mark objects in images</h2>
+
+<h3>Description</h3>
+
+<p>Higlight objects in images by outlining and/or painting them.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+paintObjects(x, tgt, opac=c(1, 1), col=c('red', NA), thick=FALSE, closed=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <code>Image</code> object in <code>Grayscale</code> color mode or an
+array containing object masks. Object masks are sets of pixels
+with the same unique integer value.</p>
+</td></tr>
+<tr valign="top"><td><code>tgt</code></td>
+<td>
+<p>An <code>Image</code> object or an array, containing the
+intensity values of the objects.</p>
+</td></tr>
+<tr valign="top"><td><code>opac</code></td>
+<td>
+<p>A numeric vector of two opacity values for drawing object
+boundaries and object bodies. Opacity ranges from 0 to 1, with 0
+being fully transparent and 1 fully opaque.</p>
+</td></tr>
+<tr valign="top"><td><code>col</code></td>
+<td>
+<p>A character vector of two R colors for drawing object
+boundaries and object bodies. By default, object boundaries are
+painted in <code>red</code> while object bodies are not painted.</p>
+</td></tr>
+<tr valign="top"><td><code>thick</code></td>
+<td>
+<p>A logical indicating whether to use thick boundary contours. Default is <code>FALSE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>closed</code></td>
+<td>
+<p>A logical indicating whether object contours should be closed along image edges or remain open.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An <code>Image</code> object or an array, containing the painted version of <code>tgt</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Oleg Sklyar, <a href="mailto:osklyar@ebi.ac.uk">osklyar@ebi.ac.uk</a>, 2006-2007
+Andrzej Oles, <a href="mailto:andrzej.oles@embl.de">andrzej.oles@embl.de</a>, 2015
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="bwlabel.html">bwlabel</a></code>, <code><a href="watershed.html">watershed</a></code>, <code><a href="computeFeatures.html">computeFeatures</a></code>, <code><a href="colorLabels.html">colorLabels</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  ## load images
+  nuc = readImage(system.file('images', 'nuclei.tif', package='EBImage'))
+  cel = readImage(system.file('images', 'cells.tif', package='EBImage'))
+  img = rgbImage(green=cel, blue=nuc)
+  display(img, title='Cells')
+
+  ## segment nuclei
+  nmask = thresh(nuc, 10, 10, 0.05)
+  nmask = opening(nmask, makeBrush(5, shape='disc'))
+  nmask = fillHull(nmask)
+  nmask = bwlabel(nmask)
+  display(normalize(nmask), title='Cell nuclei mask')
+
+  ## segment cells, using propagate and nuclei as 'seeds'
+  ctmask = opening(cel&gt;0.1, makeBrush(5, shape='disc'))
+  cmask = propagate(cel, nmask, ctmask)
+  display(normalize(cmask), title='Cell mask')
+
+  ## using paintObjects to highlight objects
+  res = paintObjects(cmask, img, col='#ff00ff')
+  res = paintObjects(nmask, res, col='#ffff00')
+  display(res, title='Segmented cells')
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Binary segmentation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bwlabel {EBImage}"><tr><td>bwlabel {EBImage}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Binary segmentation</h2>
+
+<h3>Description</h3>
+
+<p>Labels connected (connected sets) objects in a binary image.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bwlabel(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <code>Image</code> object or an array. <code>x</code> is considered as
+a binary image, whose pixels of value 0 are considered as background
+ones and other pixels as foreground ones.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>All pixels for each connected set of foreground (non-zero) pixels
+in <code>x</code> are set to an unique increasing integer, starting from 1.
+Hence, <code>max(x)</code> gives the number of connected objects in <code>x</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A <code>Grayscale</code> <code>Image</code> object or an array, containing the
+labelled version of <code>x</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gregoire Pau, 2009
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="computeFeatures.html">computeFeatures</a></code>, <code><a href="propagate.html">propagate</a></code>, <code><a href="watershed.html">watershed</a></code>, <code><a href="paintObjects.html">paintObjects</a></code>, <code><a href="colorLabels.html">colorLabels</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  ## simple example
+  x = readImage(system.file('images', 'shapes.png', package='EBImage'))
+  x = x[110:512,1:130]
+  display(x, title='Binary')
+  y = bwlabel(x)
+  display(normalize(y), title='Segmented')
+
+  ## read nuclei images
+  x = readImage(system.file('images', 'nuclei.tif', package='EBImage'))
+  display(x)
+
+  ## computes binary mask
+  y = thresh(x, 10, 10, 0.05)
+  y = opening(y, makeBrush(5, shape='disc'))
+  display(y, title='Cell nuclei binary mask')
+
+  ## bwlabel
+  z = bwlabel(y)
+  display(normalize(z), title='Cell nuclei')
+  nbnuclei = apply(z, 3, max)
+  cat('Number of nuclei=', paste(nbnuclei, collapse=','),'\n')
+
+  ## paint nuclei in color
+  cols = c('black', sample(rainbow(max(z))))
+  zrainbow = Image(cols[1+z], dim=dim(z))
+  display(zrainbow, title='Cell nuclei (recolored)')
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>EBImage</em> version 4.20.1 <a href="00Index.html">Index</a>]</div>
+</body></html>
